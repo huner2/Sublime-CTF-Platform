@@ -1,2 +1,1 @@
-# Sublime-CTF-Platform
-<sub>Tiny-CTF-Platform 2</sub>
+# Sublime-CTF-Platform <sub>Tiny-CTF-Platform 2</sub>
