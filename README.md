@@ -1,6 +1,6 @@
 # Sublime-CTF-Platform <sub>(Tiny-CTF-Platform 2)</sub>
 
-`Sublime-CTF-Platform` is an open-source (jeopardy style) CTF platform. It is relatively easy to set up and modify.  This platform is a entirely new CTF-Platform, based off of the Tiny-CTF-Platform <bold>(deprecated)</bold>
+`Sublime-CTF-Platform` is an open-source (jeopardy style) CTF platform. It is relatively easy to set up and modify.  This platform is a entirely new CTF-Platform, based off of the Tiny-CTF-Platform <b>(deprecated)</b>
 
 Contact
 -------
