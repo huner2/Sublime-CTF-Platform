@@ -1,0 +1,11 @@
+{
+	"english": {
+		"frame": {
+			"title": "SublimeCTF",
+			"login": "Login",
+			"register": "Register",
+			"logged_in": "Logged in as",
+			"logout": "Logout"
+		}
+	}
+}

@@ -1,0 +1,18 @@
+{
+	"secret_key": "your_secret_key_here",
+
+	"host": "0.0.0.0",
+	"port": 69,
+
+	"db": "sqlite:///ctf.db",
+
+	"language_file": "lang.json",
+	"language": "english",
+
+	"minimum_password_length": 8,
+
+	"admin_username": "admin",
+	"admin_password": "admin",
+
+	"debug": true
+}

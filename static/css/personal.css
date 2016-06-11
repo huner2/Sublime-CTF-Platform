@@ -1,0 +1,33 @@
+body{
+	padding-top: 70px;
+}
+a{
+	color: #82c1ff;
+}
+.navbar-brand{
+	color:#82c1ff !important;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 36px;
+}
+.navbar-brand:hover{
+	color:#1c8eff !important;
+}
+.navbar-nav li{
+	margin-left: 25px;
+}
+.navbar-nav li a{
+	color:#FFFFFF !important;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	font-size: 24px;
+}
+.navbar-nav li a:hover{
+	text-shadow: 0px 0px 5px #FFFFFF;
+}
+.active{
+	text-shadow: 0px 0px 5px #FFFFFF;
+}
+.navbar-inverse .container .pull-right{
+	color: white;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
