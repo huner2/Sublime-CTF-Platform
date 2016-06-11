@@ -2,10 +2,16 @@
 	"english": {
 		"frame": {
 			"title": "SublimeCTF",
+			"about": "About",
+			"challenges": "Challenges",
+			"team": "Team",
+			"scoreboard": "Scoreboard",
+			"sponsors": "Sponsors",
 			"login": "Login",
 			"register": "Register",
 			"logged_in": "Logged in as",
-			"logout": "Logout"
+			"logout": "Logout",
+			"contact": "Contact us at someemail@emailprovider.com"
 		}
 	}
 }

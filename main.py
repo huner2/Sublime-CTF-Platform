@@ -27,6 +27,9 @@ lang = None
 config = None
 minpasslength = None
 
+def rendering(page, login, user):
+	return render_template('frame.html', lang=lang, page=page, login=login, user=user)
+
 def get_user():
 	return (False, None)
 
@@ -37,8 +40,7 @@ def index():
 	login, user = get_user() 
 	
 	# Render the page
-	render = render_template('frame.html', lang=lang, 
-        page='main.html', login=login, user=user)
+	render = rendering('index.html', login, user)
 	return make_response(render)
 
 if __name__ == "__main__":
@@ -62,5 +64,4 @@ if __name__ == "__main__":
 
 	# Run Server
 
-	app.run(host=config['host'], port=config['port'],
-        debug=config['debug'], threaded=True)
+	app.run(host=config['host'], port=config['port'], debug=config['debug'], threaded=True)

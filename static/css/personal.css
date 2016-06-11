@@ -1,17 +1,59 @@
 body{
 	padding-top: 70px;
+	padding-bottom: 30px;
 }
 a{
 	color: #82c1ff;
 }
+@media (min-width: 931px){
+	.navbar .container{
+		width:970px;
+		margin:auto;
+	}
+}
+@media (max-width: 930px) {
+	.navbar .container{
+		width:auto;
+	}
+    .navbar-header {
+        float: none;
+    }
+    .navbar-left,.navbar-right {
+        float: none !important;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .navbar-fixed-top {
+		top: 0;
+		border-width: 0 0 1px;
+	}
+    .navbar-collapse.collapse {
+        display: none !important;
+    }
+	.navbar-nav>li {
+        float: none;
+    }
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .collapse.in{
+  		display:block !important;
+	}
+}
 .navbar-brand{
-	color:#82c1ff !important;
+	color:#ff9e4f !important;
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
 	font-weight: bold;
 	font-size: 36px;
 }
 .navbar-brand:hover{
-	color:#1c8eff !important;
+	color:#ff7300 !important;
 }
 .navbar-nav li{
 	margin-left: 25px;
@@ -27,7 +69,15 @@ a{
 .active{
 	text-shadow: 0px 0px 5px #FFFFFF;
 }
-.navbar-inverse .container .pull-right{
+.navbar-fixed-bottom .container{
 	color: white;
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	font-size:16px;
+	width:100%;
+}
+.main{
+	width:50%;
+	left:50%;
+	overflow: hidden;
+	height:auto;
 }
