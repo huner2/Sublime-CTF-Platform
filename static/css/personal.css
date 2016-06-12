@@ -78,6 +78,10 @@ a{
 .main{
 	width:50%;
 	left:50%;
-	overflow: hidden;
+	overflow: visible;
 	height:auto;
+}
+.description{
+	font-family: Georgia, serif;
+	font-size: 16px;
 }

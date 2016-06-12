@@ -33,6 +33,16 @@ def rendering(page, login, user):
 def get_user():
 	return (False, None)
 
+@app.route("/about")
+def about():
+	"""Displays the about page"""
+	
+	login, user = get_user()
+	
+	# Render the page
+	render = rendering('about.html', login, user)
+	return make_response(render)
+
 @app.route("/")
 def index():
 	"""Displays the index page"""
