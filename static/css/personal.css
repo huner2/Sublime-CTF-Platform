@@ -4,6 +4,10 @@ body{
 }
 a{
 	color: #82c1ff;
+	transition: color 0.25s;
+}
+a:hover{
+	color: #3f9efc;
 }
 @media (min-width: 931px){
 	.navbar .container{
@@ -51,6 +55,7 @@ a{
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
 	font-weight: bold;
 	font-size: 36px;
+	transition: color 0.5s;
 }
 .navbar-brand:hover{
 	color:#ff7300 !important;
@@ -62,6 +67,7 @@ a{
 	color:#FFFFFF !important;
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
 	font-size: 24px;
+	transition: text-shadow 0.5s;
 }
 .navbar-nav li a:hover{
 	text-shadow: 0px 0px 5px #FFFFFF;
@@ -84,4 +90,7 @@ a{
 .description{
 	font-family: Georgia, serif;
 	font-size: 16px;
+}
+.index-logo{
+	max-width:100%;
 }
