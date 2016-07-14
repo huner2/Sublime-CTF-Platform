@@ -49,6 +49,19 @@ a:hover{
     .collapse.in{
   		display:block !important;
 	}
+	.main{
+		width:100% !important;
+		transition: width 1s;
+	}
+	.main *{
+		transition: width 1s, font-size 1s, background-color 1s, border 1s;
+	}
+	.main p{
+		font-size:2vw;
+	}
+	.runtime{
+		font-size: 4vw !important;
+	}
 }
 .navbar-brand{
 	color:#ff9e4f !important;
@@ -82,10 +95,14 @@ a:hover{
 	width:100%;
 }
 .main{
-	width:50%;
-	left:50%;
+	width: 50%;
+	left: 50%;
 	overflow: visible;
-	height:auto;
+	height: auto;
+	transition: width 1s;
+}
+.main *{
+	transition: width 1s, font-size 1s;
 }
 .description{
 	font-family: Georgia, serif;
@@ -93,4 +110,42 @@ a:hover{
 }
 .index-logo{
 	max-width:100%;
+}
+.runtime{
+	font-size: 2vw;
+	font-family: Georgia, serif;
+	color: #ff9e4f;
+	text-shadow: -1px 1px 1px black;
+}
+.hook-line{
+	font-size: 1.5vw;
+}
+.learn{
+	transition: background-color 1s, border 1s;
+	font-size:1vw;
+}
+.sponsor-cred{
+	font-size: 1.5vw; /* I'm redundant, I know. */
+}
+.sponsor-holder{
+	width: 100%;
+	height:auto;
+	color: black;
+	font-weight: bold;
+	clear: both;
+	display: flex;
+	justify-content: space-between;
+	align-items:center;
+}
+.sponsor-holder a{
+	max-width:33.3%;
+	float:left;
+	height:100%;
+}
+.sponsor-text{
+	font-size: 2vw;
+	color:black;
+	max-width:100%;
+	float:right;
+	translate:
 }

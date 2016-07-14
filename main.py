@@ -25,10 +25,11 @@ csrf = SeaSurf(app)
 
 lang = None
 config = None
+sponsors = False
 minpasslength = None
 
 def rendering(page, login, user):
-	return render_template('frame.html', lang=lang, page=page, login=login, user=user)
+	return render_template('frame.html', lang=lang, page=page, login=login, user=user, sponsored=sponsors)
 
 def get_user():
 	return (False, None)
@@ -71,6 +72,11 @@ if __name__ == "__main__":
 	lang_str = open(config["language_file"], "rb").read()
 	lang = json.loads(lang_str)
 	lang = lang[config["language"]]
+	
+	# Sponsors
+	
+	sponsors = config["sponsors"]
+	
 
 	# Run Server
 
