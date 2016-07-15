@@ -54,7 +54,7 @@ a:hover{
 		transition: width 1s;
 	}
 	.main *{
-		transition: width 1s, font-size 1s, background-color 1s, border 1s;
+		transition: width 1s, background-color 1s, border 1s;
 	}
 	.main p{
 		font-size:2vw;
@@ -102,7 +102,7 @@ a:hover{
 	transition: width 1s;
 }
 .main *{
-	transition: width 1s, font-size 1s;
+	transition: width 1s;
 }
 .description{
 	font-family: Georgia, serif;
@@ -110,6 +110,7 @@ a:hover{
 }
 .index-logo{
 	max-width:100%;
+	margin-top:10%;
 }
 .runtime{
 	font-size: 2vw;
@@ -124,28 +125,24 @@ a:hover{
 	transition: background-color 1s, border 1s;
 	font-size:1vw;
 }
-.sponsor-cred{
-	font-size: 1.5vw; /* I'm redundant, I know. */
+.sponsor-list{
+	margin-top: 50px;
 }
 .sponsor-holder{
-	width: 100%;
-	height:auto;
-	color: black;
-	font-weight: bold;
-	clear: both;
-	display: flex;
-	justify-content: space-between;
-	align-items:center;
+	width: 100% !important;
 }
-.sponsor-holder a{
-	max-width:33.3%;
-	float:left;
-	height:100%;
+.image-holder{
+	width:50%;
+	display:inline-block;
 }
-.sponsor-text{
-	font-size: 2vw;
-	color:black;
+.image-holder a img{
 	max-width:100%;
+}
+.text-holder{
+	width:45%;
+	display:inline-block;
+	height:100% !important;
 	float:right;
-	translate:
+	font-family: Georgia, serif;
+	font-size:18px;
 }

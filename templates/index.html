@@ -5,18 +5,5 @@
 		<hr>
 		<p class="hook-line"> {{ lang.index.hook_line }} </p><br>
 		<button onclick="document.location='/about';" class="learn btn-lg btn-info">{{ lang.index.learn_more }}</button>
-		{% if sponsored %}
-			<hr>
-			<p class="sponsor-cred"> {{ lang.index.sponsor_credit }} </p></br>
-			<div class="sponsor-holder">
-				{% for sponsor, value in lang.index.sponsors.iteritems() %}
-					{% if value.image_link != "" %}
-						<a target="_blank" href="{{ value.link }}"><img class="sponsor-image sponsor-text" src="{{ value.image_link | safe }}"/ alt="{{ value.text }}"/></a>
-					{% else %}
-						<p class="sponsor-text">{{ value.text }}</p>
-					{% endif %}
-				{% endfor %}
-			</div>
-		{% endif %}
 	</center>
 </div>

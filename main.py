@@ -44,6 +44,19 @@ def about():
 	render = rendering('about.html', login, user)
 	return make_response(render)
 
+@app.route("/sponsors")
+def sponsors():
+	"""Displays the sponsors page if there are sponsors"""
+	
+	login, user = get_user()
+	
+	# Render the page
+	if sponsors:
+		render = rendering('sponsors.html', login, user)
+		return make_response(render)
+	else:
+		return redirect('/error/404')
+
 @app.route("/")
 def index():
 	"""Displays the index page"""
