@@ -28,8 +28,12 @@ config = None
 sponsors = False
 minpasslength = None
 
-def rendering(page, login, user):
-	return render_template('frame.html', lang=lang, page=page, login=login, user=user, sponsored=sponsors)
+def rendering(page, login, user, error = None):
+	if error != None:
+		return render_template('frame.html', lang=lang, page=page, login=login, error=error)
+	if sponsors:
+		return render_template('frame.html', lang=lang, page=page, login=login, user=user, sponsored=sponsors)
+	return render_template('frame.html', lang=lang, page=page, login=login, user=user)
 
 def get_user():
 	return (False, None)
@@ -55,8 +59,25 @@ def sponsors():
 		render = rendering('sponsors.html', login, user)
 		return make_response(render)
 	else:
-		return redirect('/error/404')
+		return redirect('/error/404') # In case it is manually entered with no sponsors to display.
 
+@app.errorhandler(404)
+def page_not_found(error):
+	return redirect('/error/404')
+
+@app.route("/error/<error>")
+def error(error):
+	"""Displays the error page with the corresponding error message"""
+	
+	login, user = get_user()
+	
+	if error not in lang['error']:
+		error = "Unknown"
+		
+	# Render the page
+	render = rendering('error.html', login, user, error=error)
+	return make_response(render)
+	
 @app.route("/")
 def index():
 	"""Displays the index page"""

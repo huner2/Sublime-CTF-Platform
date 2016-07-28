@@ -164,3 +164,11 @@ a:hover{
 .clearfix {
 	display: block;
 }
+.error-container{
+	margin-top:200px;
+	border: 1px solid;
+	border-radius: 4px;
+}
+.error{
+	font-size: 18px;
+}

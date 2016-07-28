@@ -1,0 +1,10 @@
+<div class="container main error-container alert-danger">
+	<center>
+		<h1><strong>{{ error }}</strong></h1><br>
+		<p class="error">
+			{% for k, v in lang.error.iteritems() if k == error %}
+				{{ v }}
+			{% endfor %}
+		</p><br>
+	</center>
+</div>
