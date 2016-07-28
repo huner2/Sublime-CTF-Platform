@@ -2,9 +2,9 @@
 	<center><h1>{{ lang.frame.title }} {{ lang.sponsor_page.sponsor_credit }}</h1></center>
 	<div class="sponsor-list">
 		{% for k, sponsor in lang.sponsor_page.sponsors.iteritems() %}
-			<div class="sponsor-holder">
+			<div class="sponsor-holder clearfix">
 				<div class="image-holder">
-					<center><a target="_blank" href="{{ sponsor.link }}"><img src="{{ sponsor.image_link }}"/></a></center>
+					<center><a target="_blank" href="{{ sponsor.link }}"><img src="{{ url_for('static', filename='img/' ~ sponsor.image_file) }}"/></a></center>
 				</div>
 				<div class="text-holder">
 					<p>{{ sponsor.text }}</p>

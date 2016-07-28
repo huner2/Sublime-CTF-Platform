@@ -130,6 +130,7 @@ a:hover{
 }
 .sponsor-holder{
 	width: 100% !important;
+	height: auto !important;
 }
 .image-holder{
 	width:50%;
@@ -145,4 +146,21 @@ a:hover{
 	float:right;
 	font-family: Georgia, serif;
 	font-size:18px;
+	word-wrap: break-word;
+}
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+.clearfix {
+	display: inline-block;
+}
+* html .clearfix {
+	height: 1%;
+}
+.clearfix {
+	display: block;
 }

@@ -25,17 +25,17 @@
 			"sponsor_credit": "is brought to you by",
 			"sponsors": {
 				"Github": {
-					"image_link": "https://cdn.tutsplus.com/net/uploads/2013/08/github-collab-retina-preview.gif",
+					"image_file": "github.gif",
 					"text": "Github",
 					"link": "http://www.github.com"
 				},
 				"Google": {
-					"image_link": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+					"image_file": "google.png",
 					"text": "Google",
 					"link": "http://www.google.com"
 				},
 				"Me": {
-					"image_link": "https://www.audiotl.com/api/track/wormhole/snapshot/512.jpg",
+					"image_file": "me.jpg",
 					"text": "Me",
 					"link": "/"
 				}
