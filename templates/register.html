@@ -2,17 +2,40 @@
 	<center><h1><strong>{{ lang.frame.register }}</strong></h1><br></center>
 	<form class="user-form" role="form" action="/register/submit" method="post" enctype="multipart/form-data">
 		<div class="form-group">
-			<div class="input-block-level clearfix">
-				<input id="username" type="text" class="form-control" name="username" placeholder="Username" required/>
+			<div class="input-block-level">
+				<input id="username" type="text" class="form-control" name="username" placeholder="{{ lang.register.username }}" required/>
 				<div class="alert alert-warning form-alert" id="username-alert" hidden>
 					<center>{{ lang.register.username_must_be }} {{ minulength }} {{ lang.register.and }} {{ maxulength }} {{ lang.register.in_length }}</center>
 				</div>
 				<br>
-				<input id="password" type="password" class="form-control" name="password" placeholder="Password" required/>
+				<input id="password" type="password" class="form-control" name="password" placeholder="{{ lang.register.password }}" required/>
 				<div class="alert alert-warning form-alert" id="password-alert" hidden>
 					<center>{{ lang.register.password_must_be }} {{ minplength }} {{ lang.register.and }} {{ maxplength }} {{ lang.register.in_length }}</center>
 				</div>
 				<br>
+				<div class="btn-group register-buttons" role="group" aria-label="...">
+					<button type="button" class="btn btn-default" id="team-creation">Create Team</button>
+					<button type="button" class="btn btn-default" id="team-join">Join Existing Team</button>
+				</div>
+				<div class="team-creation" hidden>
+					<center><h1><strong>{{ lang.register.create_team }}</strong></h1></center>
+					<input id="cteam-name" type="text" class="form-control" name="cteam-name" placeholder="{{ lang.register.team_name }}"/>
+					<div class="alert alert-warning form-alert" id="cteam-name-alert" hidden>
+						<center>{{ lang.register.team_name_must_be }} {{ mtlength }} {{ lang.register.in_length }}</center>
+					</div>
+					<br>
+					<div class="alert alert-warning form-alert alert-dismissible fade in">
+						<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<center>{{ lang.register.team_code_generation }}</center>
+					</div>
+				</div>
+				<div class="team-join" hidden>
+					<center><h1><strong>{{ lang.register.join_team }}</strong></h1></center>
+					<input id="jteam-name" type="text" class="form-control" name="jteam-name" placeholder="{{ lang.register.team_name }}"/>
+					<br>
+					<input id="jteam-code" type="text" class="form-control" name="jteam-code" placeholder="{{ lang.register.team_code }}"/>
+				</div>
+				<button id="submit" class="btn btn-info btn-block btn-submit">Submit</button>
 			</div>
 		</div>
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">

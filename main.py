@@ -61,6 +61,10 @@ def page_not_found(error):
 @app.errorhandler(500)
 def server_error(error):
 	return redirect('/error/500')
+	
+@app.errorhandler(405)
+def method_not_allowed(error):
+	return redirect('/error/405')
 
 @app.route("/error/<error>")
 def error(error):

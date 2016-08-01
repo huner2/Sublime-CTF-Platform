@@ -45,6 +45,7 @@
 			"Unknown": "Oops! An unknown error occured.",
 			"404": "The page you tried to access doesn't exist! It may have never been there or it has been removed.",
 			"500": "The server encountered an error trying to process your request.",
+			"405": "The method you used is not allowed for the requested URL.  Did you try to cheat? ;)",
 			"return_home": "Return home?"
 		},
 		"register":{
@@ -57,14 +58,21 @@
 			"team_already_exists": "This team already exists.",
 			"team_does_not_exist": "This team does not exist.",
 			"incorrect_team_code": "Incorrect team code.",
-			"team_code_generation": "A team code will be generated for you after your team has been created.",
+			"team_code_generation": "A team code will be generated for you.",
 			"team_full": "This team is already full, sorry!",
 			"team_desc": "Each team can have",
 			"members": "members.",
 			"username_must_be": "Your username must be between",
 			"and": "and",
-			"in_length": "characters in length.",
-			"password_must_be": "Your password must be between"
+			"in_length": "characters in length (a-z/0-9).",
+			"password_must_be": "Your password must be between",
+			"team_name_must_be": "Team name must be shorter than",
+			"create_team": "Team Creation",
+			"username": "Username",
+			"password": "Password",
+			"team_name": "Team Name",
+			"join_team": "Join Team",
+			"team_code": "Team Code"
 		}
 	}
 }

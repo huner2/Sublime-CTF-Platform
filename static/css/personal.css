@@ -193,3 +193,24 @@ a:hover{
 	left:25% !important;
 	margin-bottom: 0px;
 }
+.register-buttons{
+	width:50% !important;
+	left:25%;
+}
+.register-buttons *{
+	width:50%;
+	font-size: 14px;
+	font-family: Verdana, Geneva, sans-serif;
+	font-weight: bold;
+	overflow:hidden;
+}
+.team-creation{
+	width:100% !important;
+	position:relative;
+}
+.btn-submit{
+	width:50% !important;
+	left:25%;
+	margin-top:20px;
+	position:relative;
+}
