@@ -9,6 +9,8 @@
 		<title>{{ lang.frame.title }}</title>
 	</head>
 	<body>
+		<script src="{{ url_for('static', filename='js/jquery-2.2.4.min.js') }}" 
+            type='text/javascript'></script>
 		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<div class="container">
 				<div class="navbar-header">
@@ -41,8 +43,6 @@
 				<span class="pull-right">CTF Platform created by <a href="http://github.com/huner2/Sublime-CTF-Platform/" target="blank">huner2</a> on Github.</span>
 			</div>
 		</div>
-		<script src="{{ url_for('static', filename='js/jquery-1.11.0.min.js') }}" 
-            type='text/javascript'></script>
 		<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" 
             type='text/javascript'></script>
 	</body>

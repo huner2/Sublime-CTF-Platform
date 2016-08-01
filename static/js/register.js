@@ -1,0 +1,12 @@
+$("#username").focus(function(){
+	$("#username-alert").slideDown(400);
+})
+$("#username").focusout(function(){
+	$("#username-alert").slideUp(400);
+})
+$("#password").focus(function(){
+	$("#password-alert").slideDown(400);
+})
+$("#password").focusout(function(){
+	$("#password-alert").slideUp(400);
+})

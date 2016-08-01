@@ -10,6 +10,10 @@
 	"language": "english",
 
 	"minimum_password_length": 8,
+	"maximum_password_length": 40,
+	"minimum_username_length": 4,
+	"maximum_username_length": 20,
+	"maximum_team_name_length": 20,
 	"maximum_players_per_team": 4,
 
 	"admin_username": "admin",

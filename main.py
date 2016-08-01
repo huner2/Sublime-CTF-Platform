@@ -85,7 +85,9 @@ def register():
 		return redirect("/") # If they are already logged in, don't let them register again.
 	
 	# Render the page
-	render = render_template('frame.html', lang=lang, page='register.html', login=login, user=user, mplength=minpasslength)
+	render = render_template('frame.html', lang=lang, page='register.html', login=login, user=user,
+		minplength=config["minimum_password_length"],maxplength=config["maximum_password_length"], minulength=config["minimum_username_length"],
+		maxulength=config["maximum_username_length"],mtlength=config["maximum_team_name_length"],mtmembers=config["maximum_players_per_team"])
 	return make_response(render)
 	
 @app.route("/")
@@ -108,7 +110,6 @@ if __name__ == "__main__":
 
 	# Configure Security
 
-	minpasslength = config["minimum_password_length"]
 	app.secret_key = config["secret_key"]
 
 	# Load Language

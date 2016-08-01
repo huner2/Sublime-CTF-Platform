@@ -1,10 +1,22 @@
-<div class="container main error-container alert-danger">
-	<center>
-		<h1><strong>{{ error }}</strong></h1><br>
-		<p class="error">
-			{% for k, v in lang.error.iteritems() if k == error %}
-				{{ v }}
-			{% endfor %}
-		</p><br>
-	</center>
+<div class="container main register-container alert-info">
+	<center><h1><strong>{{ lang.frame.register }}</strong></h1><br></center>
+	<form class="user-form" role="form" action="/register/submit" method="post" enctype="multipart/form-data">
+		<div class="form-group">
+			<div class="input-block-level clearfix">
+				<input id="username" type="text" class="form-control" name="username" placeholder="Username" required/>
+				<div class="alert alert-warning form-alert" id="username-alert" hidden>
+					<center>{{ lang.register.username_must_be }} {{ minulength }} {{ lang.register.and }} {{ maxulength }} {{ lang.register.in_length }}</center>
+				</div>
+				<br>
+				<input id="password" type="password" class="form-control" name="password" placeholder="Password" required/>
+				<div class="alert alert-warning form-alert" id="password-alert" hidden>
+					<center>{{ lang.register.password_must_be }} {{ minplength }} {{ lang.register.and }} {{ maxplength }} {{ lang.register.in_length }}</center>
+				</div>
+				<br>
+			</div>
+		</div>
+		<input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+	</form>
 </div>
+<script src="{{ url_for('static', filename='js/register.js') }}"
+	type="text/javascript"></script>

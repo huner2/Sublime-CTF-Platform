@@ -172,3 +172,24 @@ a:hover{
 .error{
 	font-size: 18px;
 }
+.register-container{
+	margin-top:100px;
+	border: 1px solid;
+	border-radius: 4px;
+}
+.user-form{
+	width:100% !important;
+}
+.user-form .form-control{
+	width:50% !important;
+	left: 25% !important;
+	position: relative;
+}
+.form-alert{
+	font-size: 14px;
+	margin-top: 5px;
+	width:50%;
+	position:relative;
+	left:25% !important;
+	margin-bottom: 0px;
+}

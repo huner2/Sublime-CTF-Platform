@@ -42,13 +42,29 @@
 			}
 		},
 		"error":{
-			"Unknown": "Oops! An unknown error occured. Try again?",
+			"Unknown": "Oops! An unknown error occured.",
 			"404": "The page you tried to access doesn't exist! It may have never been there or it has been removed.",
-			"500": "The server encountered an error trying to process your request. Try again?"
+			"500": "The server encountered an error trying to process your request.",
+			"return_home": "Return home?"
 		},
 		"register":{
 			"password_too_short": "Your password does not meet the length requirements.",
-			"username_already_taken": "This username already exists."
+			"password_too_long": "Your password exceeds the maximum length allowed.",
+			"username_too_long": "Your username exceeds the maximum length allowed.",
+			"username_too_short": "Your username does not meet the length requirements.",
+			"username_already_taken": "This username already exists.",
+			"team_name_too_long": "Your team name exceeds the maximum length allowed.",
+			"team_already_exists": "This team already exists.",
+			"team_does_not_exist": "This team does not exist.",
+			"incorrect_team_code": "Incorrect team code.",
+			"team_code_generation": "A team code will be generated for you after your team has been created.",
+			"team_full": "This team is already full, sorry!",
+			"team_desc": "Each team can have",
+			"members": "members.",
+			"username_must_be": "Your username must be between",
+			"and": "and",
+			"in_length": "characters in length.",
+			"password_must_be": "Your password must be between"
 		}
 	}
 }
