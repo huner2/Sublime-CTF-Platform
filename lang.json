@@ -45,6 +45,10 @@
 			"Unknown": "Oops! An unknown error occured. Try again?",
 			"404": "The page you tried to access doesn't exist! It may have never been there or it has been removed.",
 			"500": "The server encountered an error trying to process your request. Try again?"
+		},
+		"register":{
+			"password_too_short": "Your password does not meet the length requirements.",
+			"username_already_taken": "This username already exists."
 		}
 	}
 }
