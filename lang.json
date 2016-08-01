@@ -43,7 +43,8 @@
 		},
 		"error":{
 			"Unknown": "Oops! An unknown error occured. Try again?",
-			"404": "The page you tried to access doesn't exist! It may have never been there or it has been removed."
+			"404": "The page you tried to access doesn't exist! It may have never been there or it has been removed.",
+			"500": "The server encountered an error trying to process your request. Try again?"
 		}
 	}
 }
