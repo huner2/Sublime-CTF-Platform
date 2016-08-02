@@ -6,6 +6,7 @@ import dataset
 import simplejson as json
 import random
 import time
+import re
 
 from base64 import b64decode
 from functools import wraps
@@ -19,6 +20,7 @@ from flask import request
 from flask import session
 from flask import url_for
 from flask.ext.seasurf import SeaSurf
+from werkzeug.security import generate_password_hash
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 csrf = SeaSurf(app)
@@ -93,7 +95,36 @@ def register():
 		minplength=config["minimum_password_length"],maxplength=config["maximum_password_length"], minulength=config["minimum_username_length"],
 		maxulength=config["maximum_username_length"],mtlength=config["maximum_team_name_length"],mtmembers=config["maximum_players_per_team"])
 	return make_response(render)
+
+@app.route("/register", methods = ["POST"])
+def register_submit():
+	"""Attempt to register user"""
 	
+	login, user = get_user()
+	
+	if login:
+		return redirect("/error/500")
+	
+	username = request.form["username"]
+	password = request.form["password"]
+	cteamname = request.form["cteam-name"]
+	jteamname = request.form["jteam-name"]
+	jteamcode = request.form["jteam-code"]
+	
+	if len(username) < config["minimum_username_length"] or len(username) > config["maximum_username_length"] or re.match('^[\w-]+$', username) is None:
+		return redirect("/register")
+	if len(password) < config["minimum_password_length"] or len(password) > config["maximum_password_length"]:
+		return redirect("/register")
+	if len(cteamname) > config["maximum_team_name_length"]:
+		return redirect("/register")
+	if cteamname != "" and (jteamname != "" or jteamcode != ""):
+		return redirect("/error/500") # Prevent accidents
+	
+	# Don't access database until it is needed
+	
+	
+	return redirect("/")	
+
 @app.route("/")
 def index():
 	"""Displays the index page"""
@@ -126,7 +157,6 @@ if __name__ == "__main__":
 	
 	sponsors = config["sponsors"]
 	
-
 	# Run Server
-
+	
 	app.run(host=config['host'], port=config['port'], debug=config['debug'], threaded=True)
