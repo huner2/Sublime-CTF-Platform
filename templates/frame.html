@@ -29,13 +29,16 @@
 						{% if login %}<li><a href="/challenges">{{ lang.frame.challenges }}</a></li>{% endif %}
 						<li><a href="/scoreboard">{{ lang.frame.scoreboard }}</a></li>
 						{% if login %}<li><a href="/team">{{ lang.frame.team }}</a></li>{% endif %}
-						<li><a href="/sponsors">{{ lang.frame.sponsors }}</a></li>
+						{% if sponsored %}<li><a href="/sponsors">{{ lang.frame.sponsors }}</a></li>{% endif %}
 						{% if not login %}<li><a href="/login">{{ lang.frame.login }}</a></li>{% endif %}
 						{% if not login %}<li><a href="/register">{{ lang.frame.register }}</a></li>{% endif %}
 					</ul>
 				</div>
 			</div>
 		</nav>
+		<noscript>
+			<center class="alert alert-danger"><p>Most of this website is unusable with Javascript disabled. Please enable Javascript for this site!</p></center>
+		</noscript>
 		{% include page %}
 		<div class="navbar-inverse navbar-fixed-bottom">
 			<div class="container">

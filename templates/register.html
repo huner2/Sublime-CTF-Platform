@@ -3,6 +3,12 @@
 	<form class="user-form" role="form" action="/register" method="post" enctype="multipart/form-data">
 		<div class="form-group">
 			<div class="input-block-level">
+				<input id="firstname" type="text" class="form-control" name="firstname" placeholder="{{ lang.register.first_name }}" required/>
+				<br>
+				<input id="lastname" type="text" class="form-control" name="lastname" placeholder="{{ lang.register.last_name }}" required/>
+				<br>
+				<input id="email" type="text" class="form-control" name="email" placeholder="{{ lang.register.email }}" required/>
+				<br>
 				<input id="username" type="text" class="form-control" name="username" placeholder="{{ lang.register.username }}" required/>
 				<div class="alert alert-warning form-alert" id="username-alert" hidden>
 					<center>{{ lang.register.username_must_be }} {{ minulength }} {{ lang.register.and }} {{ maxulength }} {{ lang.register.in_length_filtered }}</center>
