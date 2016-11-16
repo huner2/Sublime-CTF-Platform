@@ -1,3 +1,5 @@
+var clean = false;
+
 $("#username").focus(function(){
 	$("#username-alert").slideDown(400);
 });
@@ -32,3 +34,9 @@ $("#team-join").click(function(){
 	}
 	$(".team-join").slideToggle(400);
 });
+
+setInterval(function(){
+	if (clean){
+		$("#submit").disabled = true;
+	}
+}, 1000);
