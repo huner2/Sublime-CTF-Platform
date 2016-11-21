@@ -18,7 +18,7 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
-from flask.ext.seasurf import SeaSurf
+from flask_seasurf import SeaSurf
 from werkzeug.security import generate_password_hash
 from flask_sqlalchemy import SQLAlchemy as sql
 from sql_structure import * # Namespace pollution is best pollution

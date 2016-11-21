@@ -138,6 +138,7 @@ a:hover{
 }
 .image-holder a img{
 	max-width:100%;
+	max-height: 256px !important;
 }
 .text-holder{
 	width:45%;
@@ -165,7 +166,7 @@ a:hover{
 	display: block;
 }
 .error-container{
-	margin-top:200px;
+	margin-top:10%;
 	border: 1px solid;
 	border-radius: 4px;
 }
@@ -173,7 +174,7 @@ a:hover{
 	font-size: 18px;
 }
 .register-container{
-	margin-top:100px;
+	margin-top:5%;
 	border: 1px solid;
 	border-radius: 4px;
 }

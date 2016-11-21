@@ -35,8 +35,11 @@ $("#team-join").click(function(){
 	$(".team-join").slideToggle(400);
 });
 
-setInterval(function(){
+window.setInterval(function(){
 	if (clean){
-		$("#submit").disabled = true;
+		$("#submit").removeClass("disabled");
+	}
+	else if (!($("#submit").hasClass("disabled"))){
+		$("#submit").addClass("disabled");
 	}
 }, 1000);

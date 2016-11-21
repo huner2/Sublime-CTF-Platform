@@ -20,8 +20,8 @@
 				</div>
 				<br>
 				<div class="btn-group register-buttons" role="group" aria-label="...">
-					<button type="button" class="btn btn-default" id="team-creation">Create Team</button>
-					<button type="button" class="btn btn-default" id="team-join">Join Existing Team</button>
+					<button type="button" class="btn btn-default" id="team-creation">{{ lang.register.create_team }}</button>
+					<button type="button" class="btn btn-default" id="team-join">{{ lang.register.join_team }}</button>
 				</div>
 				<div class="team-creation" hidden>
 					<center><h1><strong>{{ lang.register.create_team }}</strong></h1></center>
@@ -41,7 +41,7 @@
 					<br>
 					<input id="jteam-code" type="text" class="form-control" name="jteam-code" placeholder="{{ lang.register.team_code }}"/>
 				</div>
-				<button id="submit" class="btn btn-info btn-block btn-submit">Submit</button>
+				<button type="button" id="submit" class="btn btn-info btn-block btn-submit disabled">{{ lang.frame.submit }}</button>
 			</div>
 		</div>
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
