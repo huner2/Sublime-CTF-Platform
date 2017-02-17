@@ -1,4 +1,11 @@
-var clean = false;
+function validateEmail(email) {
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
+function isClean() {
+	return false;
+}
 
 $("#username").focus(function(){
 	$("#username-alert").slideDown(400);
@@ -34,9 +41,42 @@ $("#team-join").click(function(){
 	}
 	$(".team-join").slideToggle(400);
 });
-
+// Start Checking
+$("#firstname").focusout(function(){
+    if(!(/^[a-zA-Z]+$/.test($("#firstname").val()))){
+		$("#firstname").css('border-color', "red");
+		clean = false
+	}
+	else{
+		$("#firstname").css('border-color', "#ccc");
+	}
+});
+$("#lastname").focusout(function(){
+    if(!(/^[a-zA-Z]+$/.test($("#lastname").val()))){
+		$("#lastname").css('border-color', "red");
+	}
+	else{
+		$("#lastname").css('border-color', "#ccc");
+	}
+});
+$("#email").focusout(function(){
+    if(!(validateEmail($("#email").val()))){
+		$("#email").css('border-color', "red");
+	}
+	else{
+		$("#email").css('border-color', "#ccc");
+	}
+});
+$("#username").focusout(function(){
+	if(/^[a-zA-Z0-9]+$/.test($("#username")) || $("#username").val().length < parseInt($("#minulength").text()) || $("#username").val().length > parseInt($("#maxulength").text())){
+		$("#username").css('border-color', "red");
+	}
+	else{
+		$("#username").css('border-color', "#ccc");
+	}
+});
 window.setInterval(function(){
-	if (clean){
+	if (isClean()){
 		$("#submit").removeClass("disabled");
 	}
 	else if (!($("#submit").hasClass("disabled"))){
