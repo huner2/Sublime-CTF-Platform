@@ -75,6 +75,14 @@ $("#username").focusout(function(){
 		$("#username").css('border-color', "#ccc");
 	}
 });
+$("#password").focusout(function(){
+	if($("#password").val().length < parseInt($("#minplength").text()) || $("#password").val().length > parseInt($("#maxplength").text())){
+		$("#password").css('border-color', "red");
+	}
+	else{
+		$("#password").css('border-color', "#ccc");
+	}
+});
 window.setInterval(function(){
 	if (isClean()){
 		$("#submit").removeClass("disabled");

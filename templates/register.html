@@ -16,7 +16,7 @@
 				<br>
 				<input id="password" type="password" class="form-control" name="password" placeholder="{{ lang.register.password }}" required/>
 				<div class="alert alert-warning form-alert" id="password-alert" hidden>
-					<center>{{ lang.register.password_must_be }} {{ minplength }} {{ lang.register.and }} {{ maxplength }} {{ lang.register.in_length }}</center>
+					<center>{{ lang.register.password_must_be }} <span id="minplength">{{ minplength }}</span> {{ lang.register.and }} <span id="maxplength">{{ maxplength }}</span> {{ lang.register.in_length }}</center>
 				</div>
 				<br>
 				<div class="btn-group register-buttons" role="group" aria-label="...">
