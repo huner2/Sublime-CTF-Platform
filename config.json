@@ -13,6 +13,7 @@
 	"maximum_password_length": 40,
 	"minimum_username_length": 4,
 	"maximum_username_length": 20,
+	"minimum_team_name_length": 4,
 	"maximum_team_name_length": 30,
 	"maximum_players_per_team": 4,
 

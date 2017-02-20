@@ -50,12 +50,7 @@
 			"return_home": "Return home?"
 		},
 		"register":{
-			"password_too_short": "Your password does not meet the length requirements.",
-			"password_too_long": "Your password exceeds the maximum length allowed.",
-			"username_too_long": "Your username exceeds the maximum length allowed.",
-			"username_too_short": "Your username does not meet the length requirements.",
 			"username_already_taken": "This username already exists.",
-			"team_name_too_long": "Your team name exceeds the maximum length allowed.",
 			"team_already_exists": "This team already exists.",
 			"team_does_not_exist": "This team does not exist.",
 			"incorrect_team_code": "Incorrect team code.",
@@ -68,7 +63,7 @@
 			"in_length_filtered": "characters in length (alphanumeric).",
 			"in_length": "characters in length.",
 			"password_must_be": "Your password must be between",
-			"team_name_must_be": "Team name must be shorter than",
+			"team_name_must_be": "Team name must be between",
 			"create_team": "Create Team",
 			"username": "Username",
 			"password": "Password",

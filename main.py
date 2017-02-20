@@ -5,7 +5,6 @@
 import simplejson as json
 import random, string, time, re
 
-from base64 import b64decode
 from functools import wraps
 
 from flask import Flask, jsonify, make_response, redirect, render_template, request, session, url_for
@@ -19,8 +18,12 @@ app = Flask(__name__, static_folder='static', static_url_path='')
 config_str = open("config.json", "rb").read()
 config = json.loads(config_str)
 
+# http://flask-sqlalchemy.pocoo.org/2.1/config/
 app.config['SQLALCHEMY_DATABASE_URI'] = config['db']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 csrf = SeaSurf(app)
+# Import models and database
 from models import db, User, Team, Challenge
 
 lang = None
@@ -90,7 +93,7 @@ def register():
 	# Render the page
 	render = render_template('frame.html', lang=lang, sponsored=sponsors, page='register.html', login=login, user=user,
 		minplength=config["minimum_password_length"],maxplength=config["maximum_password_length"], minulength=config["minimum_username_length"],
-		maxulength=config["maximum_username_length"],mtlength=config["maximum_team_name_length"],mtmembers=config["maximum_players_per_team"])
+		maxulength=config["maximum_username_length"],mintlength=config["minimum_team_name_length"],maxtlength=config["maximum_team_name_length"])
 	return make_response(render)
 	
 @app.route("/check/<type>/<value>", methods = ["GET"])
@@ -102,11 +105,12 @@ def check_info(type, value):
 	if login:
 		return redirect("/error/405")
 
-	'''if type == "username":
+	if type == "username":
 		if not User.query.filter_by(username=value).first() == None:
 			return jsonify({"taken": 1})
 		else:
-			return jsonify({"taken": 0})'''
+			return jsonify({"taken": 0})
+			
 	return jsonify({})
 
 @app.route("/register", methods = ["POST"])
@@ -139,6 +143,8 @@ def register_submit():
 		return redirect("/register")
 	if cteamname == "" and jteamname == "":
 		return redirect("/register")
+	if re.match('^[\w-]+$', cteamname) is None:
+		return redirect("/register")
 	if not firstname.isalpha() or not lastname.isalpha():
 		return redirect("/register")
 	if not re.match("[^@]+@[^@]+\.[^@]+", email):
@@ -167,7 +173,7 @@ def register_submit():
 	db.session.add(newUser)
 	db.session.commit()
 	
-	# Database sessions close automatically, so don't complain.
+	# Database sessions close automatically
 	
 	return redirect("/team")	
 

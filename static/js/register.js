@@ -7,12 +7,18 @@ function checkUser(user) {
     "/check/username/" + user,
     {},
     function(data) {
-       alert('page content: ' + data);
+       console.log(data["taken"]);
     }
 );
 }
 
 function isClean() {
+	var items = [$("#username"),$("#password"),$("#email"),$("#firstname"),$("#lastname")];
+	for (var i = 0;i < items.length;i++){
+		if (items[i].css('border-color') == "rgb(255, 0, 0)" || items[i].val() == ""){
+			return false;
+		}
+	}
 	return true;
 }
 
@@ -77,13 +83,13 @@ $("#email").focusout(function(){
 	}
 });
 $("#username").focusout(function(){
-	if(/^[a-zA-Z0-9]+$/.test($("#username")) || $("#username").val().length < parseInt($("#minulength").text()) || $("#username").val().length > parseInt($("#maxulength").text())){
+	if(!(/^[a-zA-Z0-9]+$/.test($("#username").val())) || $("#username").val().length < parseInt($("#minulength").text()) || $("#username").val().length > parseInt($("#maxulength").text())){
 		$("#username").css('border-color', "red");
 	}
 	else{
 		$("#username").css('border-color', "#ccc");
+		checkUser($("#username").val())
 	}
-	checkUser($("#username").val())
 });
 $("#password").focusout(function(){
 	if($("#password").val().length < parseInt($("#minplength").text()) || $("#password").val().length > parseInt($("#maxplength").text())){
@@ -100,4 +106,4 @@ window.setInterval(function(){
 	else if (!($("#submit").hasClass("disabled"))){
 		$("#submit").addClass("disabled");
 	}
-}, 1000);
+}, 100);

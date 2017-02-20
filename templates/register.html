@@ -27,7 +27,7 @@
 					<center><h1><strong>{{ lang.register.create_team }}</strong></h1></center>
 					<input id="cteam-name" type="text" class="form-control" name="cteam-name" placeholder="{{ lang.register.team_name }}"/>
 					<div class="alert alert-warning form-alert" id="cteam-name-alert" hidden>
-						<center>{{ lang.register.team_name_must_be }} {{ mtlength }} {{ lang.register.in_length }}</center>
+						<center>{{ lang.register.team_name_must_be }} {{ mintlength }} {{ lang.register.and }} {{ maxtlength }} {{ lang.register.in_length_filtered }}</center>
 					</div>
 					<br>
 					<div class="alert alert-warning form-alert alert-dismissible fade in">
@@ -41,7 +41,7 @@
 					<br>
 					<input id="jteam-code" type="text" class="form-control" name="jteam-code" placeholder="{{ lang.register.team_code }}"/>
 				</div>
-				<input type="submit" id="submit" value="submit" class="btn btn-info btn-block btn-submit">{{ lang.frame.submit }}</input>
+				<input type="submit" id="submit" value="{{ lang.frame.submit }}" class="btn btn-info btn-block btn-submit"></input>
 			</div>
 		</div>
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
