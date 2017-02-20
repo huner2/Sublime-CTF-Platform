@@ -1,7 +1,8 @@
+from __main__ import app
 from flask_sqlalchemy import SQLAlchemy as sql
 import simplejson as json
 
-db = sql()
+db = sql(app)
 
 # Load Config
 config_str = open("config.json", "rb").read()

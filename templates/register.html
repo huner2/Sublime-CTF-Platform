@@ -41,7 +41,7 @@
 					<br>
 					<input id="jteam-code" type="text" class="form-control" name="jteam-code" placeholder="{{ lang.register.team_code }}"/>
 				</div>
-				<button type="button" id="submit" class="btn btn-info btn-block btn-submit disabled">{{ lang.frame.submit }}</button>
+				<input type="submit" id="submit" value="submit" class="btn btn-info btn-block btn-submit">{{ lang.frame.submit }}</input>
 			</div>
 		</div>
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">

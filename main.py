@@ -3,25 +3,15 @@
 """server.py -- the main flask server module"""
 
 import simplejson as json
-import random, string
-import time
-import re
+import random, string, time, re
 
 from base64 import b64decode
 from functools import wraps
 
-from flask import Flask
-from flask import jsonify
-from flask import make_response
-from flask import redirect
-from flask import render_template
-from flask import request
-from flask import session
-from flask import url_for
+from flask import Flask, jsonify, make_response, redirect, render_template, request, session, url_for
 from flask_seasurf import SeaSurf
 from werkzeug.security import generate_password_hash
 from flask_sqlalchemy import SQLAlchemy as sql
-from sql_structure import * # Namespace pollution is best pollution
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 
@@ -30,8 +20,8 @@ config_str = open("config.json", "rb").read()
 config = json.loads(config_str)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = config['db']
-db = sql(app)
 csrf = SeaSurf(app)
+from models import db, User, Team, Challenge
 
 lang = None
 sponsors = False
@@ -103,14 +93,21 @@ def register():
 		maxulength=config["maximum_username_length"],mtlength=config["maximum_team_name_length"],mtmembers=config["maximum_players_per_team"])
 	return make_response(render)
 	
-@app.route("/check", methods = ["POST"])
-def check_info():
+@app.route("/check/<type>/<value>", methods = ["GET"])
+def check_info(type, value):
 	"""Check info currently entered on register form"""
 	
-	login, user = get_user
+	login, user = get_user()
 	
 	if login:
 		return redirect("/error/405")
+
+	'''if type == "username":
+		if not User.query.filter_by(username=value).first() == None:
+			return jsonify({"taken": 1})
+		else:
+			return jsonify({"taken": 0})'''
+	return jsonify({})
 
 @app.route("/register", methods = ["POST"])
 def register_submit():
@@ -148,14 +145,12 @@ def register_submit():
 		return redirect("/register")
 	if not User.query.filter_by(username=username).first() == None:
 		return redirect("/register")
-	if not User.query.filter_by(email=email).first() == None:
-		return redirect("/register")
 		
 	if cteamname != "":
 		if not Team.query.filter_by(name=cteamname).first() == None:
 			return redirect("/register")
 		team = cteamname
-		newTeam = Team(cteamname, str(random.randint(10000,99999)) + ''.join(random.choice(string.lowercase + string.uppercase) for i in range(5)))
+		newTeam = Team(cteamname, str(random.randint(10000,99999)) + ''.join(random.choice(string.ascii_lowercase + string.ascii_uppercase) for i in range(5)))
 		db.session.add(newTeam)
 		
 	if jteamname != "":

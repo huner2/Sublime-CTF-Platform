@@ -2,9 +2,18 @@ function validateEmail(email) {
   var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(email);
 }
+function checkUser(user) {
+	$.get(
+    "/check/username/" + user,
+    {},
+    function(data) {
+       alert('page content: ' + data);
+    }
+);
+}
 
 function isClean() {
-	return false;
+	return true;
 }
 
 $("#username").focus(function(){
@@ -74,6 +83,7 @@ $("#username").focusout(function(){
 	else{
 		$("#username").css('border-color', "#ccc");
 	}
+	checkUser($("#username").val())
 });
 $("#password").focusout(function(){
 	if($("#password").val().length < parseInt($("#minplength").text()) || $("#password").val().length > parseInt($("#maxplength").text())){
