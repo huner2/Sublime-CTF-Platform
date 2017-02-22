@@ -10,6 +10,9 @@
 				<input id="email" type="text" class="form-control" name="email" placeholder="{{ lang.register.email }}" required/>
 				<br>
 				<input id="username" type="text" class="form-control" name="username" placeholder="{{ lang.register.username }}" required/>
+				<div class="alert alert-danger form-alert" id="username-taken" hidden>
+					<center>{{ lang.register.username_already_taken }}</center>
+				</div>
 				<div class="alert alert-warning form-alert" id="username-alert" hidden>
 					<center>{{ lang.register.username_must_be }} <span id="minulength">{{ minulength }}</span> {{ lang.register.and }} <span id="maxulength">{{ maxulength }}</span> {{ lang.register.in_length_filtered }}</center>
 				</div>
@@ -30,7 +33,7 @@
 						<center>{{ lang.register.team_name_must_be }} {{ mintlength }} {{ lang.register.and }} {{ maxtlength }} {{ lang.register.in_length_filtered }}</center>
 					</div>
 					<br>
-					<div class="alert alert-warning form-alert alert-dismissible fade in">
+					<div class="alert alert-warning form-alert alert-dismissible fade in" id="team-code-warn">
 						<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<center>{{ lang.register.team_code_generation }}</center>
 					</div>

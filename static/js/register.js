@@ -7,7 +7,13 @@ function checkUser(user) {
     "/check/username/" + user,
     {},
     function(data) {
-       console.log(data["taken"]);
+       if (data["taken"] == 1){
+		   $("#username").css('border-color', "red");
+		   $("#username-taken").slideDown(400);
+	   }
+	   else{
+		   $("#username-taken").slideUp(400);
+	   }
     }
 );
 }
@@ -47,7 +53,7 @@ $("#team-creation").click(function(){
 	if ($(".team-join").is(":visible")){
 		$(".team-join").slideUp(400);
 	}
-	$(".alert-dismissible").show();
+	$("#team-code-warn").show();
 	$(".team-creation").slideToggle(400);
 });
 $("#team-join").click(function(){
