@@ -29,6 +29,9 @@
 				<div class="team-creation" hidden>
 					<center><h1><strong>{{ lang.register.create_team }}</strong></h1></center>
 					<input id="cteam-name" type="text" class="form-control" name="cteam-name" placeholder="{{ lang.register.team_name }}"/>
+					<div class="alert alert-danger form-alert" id="cteam-taken" hidden>
+						<center>{{ lang.register.team_already_exists }}</center>
+					</div>
 					<div class="alert alert-warning form-alert" id="cteam-name-alert" hidden>
 						<center>{{ lang.register.team_name_must_be }} {{ mintlength }} {{ lang.register.and }} {{ maxtlength }} {{ lang.register.in_length_filtered }}</center>
 					</div>

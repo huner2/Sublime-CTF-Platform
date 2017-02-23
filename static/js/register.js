@@ -18,8 +18,24 @@ function checkUser(user) {
 );
 }
 
+function checkCTeam(team) {
+	$.get(
+    "/check/team/" + team,
+    {},
+    function(data) {
+       if (data["taken"] == 1){
+		   $("#cteam-name").css('border-color', "red");
+		   $("#cteam-taken").slideDown(400);
+	   }
+	   else{
+		   $("#cteam-taken").slideUp(400);
+	   }
+    }
+);
+}
+
 function isClean() {
-	var items = [$("#username"),$("#password"),$("#email"),$("#firstname"),$("#lastname")];
+	var items = [$("#username"),$("#password"),$("#email"),$("#firstname"),$("#lastname"),$("#cteam-name")];
 	for (var i = 0;i < items.length;i++){
 		if (items[i].css('border-color') == "rgb(255, 0, 0)" || items[i].val() == ""){
 			return false;
@@ -53,6 +69,8 @@ $("#team-creation").click(function(){
 	if ($(".team-join").is(":visible")){
 		$(".team-join").slideUp(400);
 	}
+	$("#jteam-name").val("");
+	$("#jteam-code").val("");
 	$("#team-code-warn").show();
 	$(".team-creation").slideToggle(400);
 });
@@ -60,49 +78,59 @@ $("#team-join").click(function(){
 	if ($(".team-creation").is(":visible")){
 		$(".team-creation").slideUp(400);
 	}
+	$("#cteam-name").val("")
 	$(".team-join").slideToggle(400);
 });
 // Start Checking
 $("#firstname").focusout(function(){
-    if(!(/^[a-zA-Z]+$/.test($("#firstname").val()))){
-		$("#firstname").css('border-color', "red");
+    if(!(/^[a-zA-Z]+$/.test($(this).val()))){
+		$(this).css('border-color', "red");
 		clean = false
 	}
 	else{
-		$("#firstname").css('border-color', "#ccc");
+		$(this).css('border-color', "#ccc");
 	}
 });
 $("#lastname").focusout(function(){
-    if(!(/^[a-zA-Z]+$/.test($("#lastname").val()))){
-		$("#lastname").css('border-color', "red");
+    if(!(/^[a-zA-Z]+$/.test($(this).val()))){
+		$(this).css('border-color', "red");
 	}
 	else{
-		$("#lastname").css('border-color', "#ccc");
+		$(this).css('border-color', "#ccc");
 	}
 });
 $("#email").focusout(function(){
-    if(!(validateEmail($("#email").val()))){
-		$("#email").css('border-color', "red");
+    if(!(validateEmail($(this).val()))){
+		$(this).css('border-color', "red");
 	}
 	else{
-		$("#email").css('border-color', "#ccc");
+		$(this).css('border-color', "#ccc");
 	}
 });
 $("#username").focusout(function(){
-	if(!(/^[a-zA-Z0-9]+$/.test($("#username").val())) || $("#username").val().length < parseInt($("#minulength").text()) || $("#username").val().length > parseInt($("#maxulength").text())){
-		$("#username").css('border-color', "red");
+	if(!(/^[a-zA-Z0-9]+$/.test($(this).val())) || $(this).val().length < parseInt($("#minulength").text()) || $(this).val().length > parseInt($("#maxulength").text())){
+		$(this).css('border-color', "red");
 	}
 	else{
-		$("#username").css('border-color', "#ccc");
-		checkUser($("#username").val())
+		$(this).css('border-color', "#ccc");
+		checkUser($(this).val())
 	}
 });
 $("#password").focusout(function(){
-	if($("#password").val().length < parseInt($("#minplength").text()) || $("#password").val().length > parseInt($("#maxplength").text())){
-		$("#password").css('border-color', "red");
+	if($(this).val().length < parseInt($("#minplength").text()) || $(this).val().length > parseInt($("#maxplength").text())){
+		$(this).css('border-color', "red");
 	}
 	else{
-		$("#password").css('border-color', "#ccc");
+		$(this).css('border-color', "#ccc");
+	}
+});
+$("#cteam-name").focusout(function(){
+	if(!(/^[a-zA-Z0-9]+$/.test($(this).val())) || $(this).val().length < parseInt($("#mintlength").text()) || $(this).val().length > parseInt($("#maxtlength").text())){
+		$(this).css('border-color', "red");
+	}
+	else{
+		$(this).css('border-color', "#ccc");
+		checkCTeam($(this).val())
 	}
 });
 window.setInterval(function(){

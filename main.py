@@ -111,6 +111,12 @@ def check_info(type, value):
 		else:
 			return jsonify({"taken": 0})
 			
+	if type == "team":
+		if not Team.query.filter_by(name=value).first() == None:
+			return jsonify({"taken": 1})
+		else:
+			return jsonify({"taken": 0})
+			
 	return jsonify({})
 
 @app.route("/register", methods = ["POST"])
@@ -143,8 +149,6 @@ def register_submit():
 		return redirect("/register")
 	if cteamname == "" and jteamname == "":
 		return redirect("/register")
-	if re.match('^[\w-]+$', cteamname) is None:
-		return redirect("/register")
 	if not firstname.isalpha() or not lastname.isalpha():
 		return redirect("/register")
 	if not re.match("[^@]+@[^@]+\.[^@]+", email):
@@ -153,6 +157,8 @@ def register_submit():
 		return redirect("/register")
 		
 	if cteamname != "":
+		if re.match('^[\w-]+$', cteamname) is None:
+			return redirect("/register")
 		if not Team.query.filter_by(name=cteamname).first() == None:
 			return redirect("/register")
 		team = cteamname
