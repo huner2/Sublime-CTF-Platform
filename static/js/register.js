@@ -35,11 +35,20 @@ function checkCTeam(team) {
 }
 
 function isClean() {
-	var items = [$("#username"),$("#password"),$("#email"),$("#firstname"),$("#lastname"),$("#cteam-name")];
+	var items = [$("#username"),$("#password"),$("#email"),$("#firstname"),$("#lastname")];
 	for (var i = 0;i < items.length;i++){
 		if (items[i].css('border-color') == "rgb(255, 0, 0)" || items[i].val() == ""){
 			return false;
 		}
+	}
+	items = [$("#cteam-name"),$("#jteam-name"),$("#jteam-code")];
+	for (var i = 0;i < items.length;i++){
+		if (items[i].css('border-color') == "rgb(255, 0, 0)"){
+			return false;
+		}
+	}
+	if ($("#cteam-name").val() == "" && $("#jteam-name").val() == "" && $("#jteam-code").val() == ""){
+		return false;
 	}
 	return true;
 }
@@ -82,7 +91,7 @@ $("#team-join").click(function(){
 	$(".team-join").slideToggle(400);
 });
 // Start Checking
-$("#firstname").focusout(function(){
+$("#firstname").keyup(function(){
     if(!(/^[a-zA-Z]+$/.test($(this).val()))){
 		$(this).css('border-color', "red");
 		clean = false
@@ -91,7 +100,7 @@ $("#firstname").focusout(function(){
 		$(this).css('border-color', "#ccc");
 	}
 });
-$("#lastname").focusout(function(){
+$("#lastname").keyup(function(){
     if(!(/^[a-zA-Z]+$/.test($(this).val()))){
 		$(this).css('border-color', "red");
 	}
@@ -99,7 +108,7 @@ $("#lastname").focusout(function(){
 		$(this).css('border-color', "#ccc");
 	}
 });
-$("#email").focusout(function(){
+$("#email").keyup(function(){
     if(!(validateEmail($(this).val()))){
 		$(this).css('border-color', "red");
 	}
@@ -107,7 +116,7 @@ $("#email").focusout(function(){
 		$(this).css('border-color', "#ccc");
 	}
 });
-$("#username").focusout(function(){
+$("#username").keyup(function(){
 	if(!(/^[a-zA-Z0-9]+$/.test($(this).val())) || $(this).val().length < parseInt($("#minulength").text()) || $(this).val().length > parseInt($("#maxulength").text())){
 		$(this).css('border-color', "red");
 	}
@@ -116,7 +125,7 @@ $("#username").focusout(function(){
 		checkUser($(this).val())
 	}
 });
-$("#password").focusout(function(){
+$("#password").keyup(function(){
 	if($(this).val().length < parseInt($("#minplength").text()) || $(this).val().length > parseInt($("#maxplength").text())){
 		$(this).css('border-color', "red");
 	}
@@ -124,7 +133,7 @@ $("#password").focusout(function(){
 		$(this).css('border-color', "#ccc");
 	}
 });
-$("#cteam-name").focusout(function(){
+$("#cteam-name").keyup(function(){
 	if(!(/^[a-zA-Z0-9]+$/.test($(this).val())) || $(this).val().length < parseInt($("#mintlength").text()) || $(this).val().length > parseInt($("#maxtlength").text())){
 		$(this).css('border-color', "red");
 	}
@@ -135,9 +144,9 @@ $("#cteam-name").focusout(function(){
 });
 window.setInterval(function(){
 	if (isClean()){
-		$("#submit").removeClass("disabled");
+		$("#submit").prop("disabled", false);
 	}
-	else if (!($("#submit").hasClass("disabled"))){
-		$("#submit").addClass("disabled");
+	else{
+		$("#submit").prop("disabled", true);
 	}
 }, 100);

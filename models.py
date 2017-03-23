@@ -14,7 +14,7 @@ class User(db.Model):
 	password = db.Column(db.String(config['maximum_password_length']), unique=False)
 	firstname = db.Column(db.String(80), unique=False)
 	lastname = db.Column(db.String(80), unique=False)
-	email = db.Column(db.String(120), unique=True)
+	email = db.Column(db.String(120), unique=False)
 	team = db.Column(db.String(config['maximum_team_name_length']), unique=False)
 	
 	def __init__(self, username, password, firstname, lastname, email, team):
