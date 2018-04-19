@@ -1,7 +1,7 @@
 package main
 
 import (
-    "encoding/json"
+    //"encoding/json"
     "net/http"
     "os"
     "time"
@@ -18,11 +18,11 @@ func main() {
 
 	r := mux.NewRouter()
 
-	api := r.PathPrefix("/api/v1/").Subrouter()
+	// api := r.PathPrefix("/api/v1/").Subrouter()
 	// TODO api.HandleFunc("/some", someFunc).Methods("GET")
 
 	// Serve static assets directly.
-	r.PathPrefix("/static").Handler(http.FileServer(http.Dir("../client/build/")))
+	r.PathPrefix("/static").Handler(http.FileServer(http.Dir("client/build/")))
 
 	r.PathPrefix("/").HandlerFunc(IndexHandler(entry))
 
