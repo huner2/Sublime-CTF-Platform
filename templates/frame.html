@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="{{ locale['lang'] }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{ prefs['title'] }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico' )}}"/>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">{{ prefs['name'] }}</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item {% if page=='index.html' %}active{% endif %}">
+            <a class="nav-link" href="/">{{ locale['home'] }}</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div id="content">
+      {% block content %}
+        <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+      {% endblock %}
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">Sublime-CTF-Platform created by Hunter Ross. <a target="_blank" href="https://github.com/huner2/Sublime-CTF-Platform">Github Repo</a></span>
+      </div>
+    </footer>
+  </body>
+</html>
