@@ -11,7 +11,10 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">{{ prefs['name'] }}</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-toggle="collapse"
+          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation"
+        >
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -20,6 +23,22 @@
           <li class="nav-item {% if page=='index.html' %}active{% endif %}">
             <a class="nav-link" href="/">{{ locale['home'] }}</a>
           </li>
+          <li class="nav-item {% if page=='about.html' %}active{% endif %}">
+            <a class="nav-link" href="/about">{{ locale['about'] }}</a>
+          </li>
+          {% if future != start_time %}
+            {% if passed %}
+              {% if not system.getboolean('restricted') %}
+                <li class="nav-item {% if page=='challenges.html' %}active{% endif %}">
+                  <a class="nav-link" href="/challenges">{{ locale['challenges'] }}</a>
+                </li>
+              {% endif %}
+            {% else %}
+              <li class="nav-item {% if page=='challenges.html' %}active{% endif %}">
+                <a class="nav-link" href="/challenges">{{ locale['challenges'] }}</a>
+              </li>
+            {% endif %}
+          {% endif %}
         </ul>
       </div>
     </nav>
