@@ -26,18 +26,16 @@
           <li class="nav-item {% if page=='about.html' %}active{% endif %}">
             <a class="nav-link" href="/about">{{ locale['about'] }}</a>
           </li>
-          {% if future != start_time %}
-            {% if passed %}
-              {% if not system.getboolean('restricted') %}
-                <li class="nav-item {% if page=='challenges.html' %}active{% endif %}">
-                  <a class="nav-link" href="/challenges">{{ locale['challenges'] }}</a>
-                </li>
-              {% endif %}
-            {% else %}
+          {% if passed %}
+            {% if not system.getboolean('restricted') %}
               <li class="nav-item {% if page=='challenges.html' %}active{% endif %}">
                 <a class="nav-link" href="/challenges">{{ locale['challenges'] }}</a>
               </li>
             {% endif %}
+          {% else %}
+            <li class="nav-item {% if page=='challenges.html' %}active{% endif %}">
+              <a class="nav-link" href="/challenges">{{ locale['challenges'] }}</a>
+            </li>
           {% endif %}
         </ul>
       </div>

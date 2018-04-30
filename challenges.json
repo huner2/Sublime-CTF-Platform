@@ -1,0 +1,16 @@
+{
+  "Example_Problem": {
+    "category": "Cryptography",
+    "description": "This is an example problem",
+    "flag": "sublime_ctf{hello_world}",
+    "points": 10,
+    "skip": false
+  },
+  "Example Problem Two": {
+    "category": "Web",
+    "description": "This is another example problem with a <a href='#'>Link</a>",
+    "flag": "sublime_ctf{world_hello}",
+    "points": 5,
+    "skip": false
+  }
+}

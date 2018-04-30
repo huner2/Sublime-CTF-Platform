@@ -12,28 +12,9 @@ app.config['SECRET_KEY'] = config['system']['secret_key']
 # Init some global vars
 start_time_un = arrow.get(config['system']['start_time']).to("utc")
 end_time_un = arrow.get(config['system']['end_time']).to("utc")
-start_time = start_time_un.format('MMM D, YYYY - h:mm A') + " UTC"
-end_time = end_time_un.format('MMM D, YYYY - h:mm A') + " UTC"
 team_mode = config.getboolean('system','teams')
-
-# Ensure database is up and running
-conn = driver.connect("dbname={} user={} password={}".format(
-    config['system']['db'], config['system']['dbuser'], config['system']['dbpassword'])
-)
-cursor = conn.cursor()
-cursor.execute("SELECT to_regclass('public.users')")
-if cursor.fetchone()[0] == None: # Table doesn't exist
-    cursor.execute("CREATE TABLE users (id serial PRIMARY KEY, username varchar, email varchar, password varchar, jwt varchar, solved varchar, points int, team int)")
-cursor.execute("SELECT to_regclass('public.challenges')")
-if cursor.fetchone()[0] == None:
-    cursor.execute("CREATE TABLE challenges (id serial PRIMARY KEY, name varchar, flag varchar, points smallint, description varchar, url varchar, hint varchar, solved int)")
-if team_mode: # Team mode enabled
-    cursor.execute("SELECT to_regclass('public.teams')")
-    if cursor.fetchone()[0] == None:
-        cursor.execute("CREATE TABLE teams (id serial PRIMARY KEY, name varchar, token varchar(9), points int, solved smallint, members varchar)")
-conn.commit()
-cursor.close()
-conn.close()
+challenges = []
+ltime = 0
 
 # Use the same values for all renders
 def render_p(page, **kwargs):
@@ -47,7 +28,36 @@ def render_p(page, **kwargs):
         **kwargs
     )
 
+# Get challenges
+def queryChal():
+    global challenges
+    global ltime
+    ctime = arrow.utcnow().timestamp
+    if (ctime < (ltime + 6000)): # Only allow refreshing of challenges every 10 minutes to reduce server queries
+        return
+    ltime = ctime
+    conn = driver.connect("dbname={} user={} password={}".format(
+        config['system']['db'], config['system']['dbuser'], config['system']['dbpassword'])
+    )
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM challenges;")
+    lchal = cursor.fetchall()
+    wchal = []
+    if (lchal[0] == None): return
+    for chal in lchal:
+        wchal.append(
+            {"name": chal[1], "category": chal[2], "flag": chal[3],
+            "points": chal[4], "description": chal[5], "skip": chal[6]}
+        )
+    challenges = wchal
+
+queryChal() # Query the challenges once at the beginning
 # Views
+
+@app.route('/challenges')
+def challengepage():
+    queryChal()
+    return render_p('challenges.html')
 
 @app.route('/about')
 def about():
@@ -55,6 +65,8 @@ def about():
 
 @app.route('/')
 def index():
+    start_time = start_time_un.format('MMM D, YYYY - h:mm A') + " UTC"
+    end_time = end_time_un.format('MMM D, YYYY - h:mm A') + " UTC"
     future = start_time if arrow.utcnow().timestamp < start_time_un.timestamp else end_time
     return render_p('index.html', start_time=start_time, end_time=end_time,
     future=future, start_time_un=start_time_un, end_time_un=end_time_un)
