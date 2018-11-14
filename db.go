@@ -6,18 +6,22 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var connString = "postgres://ctf:ctf@localhost/ctf"
-var db *sql.DB
+var connString = "postgres://ctfu:ctuf@localhost/ctf"
 
-func openConnection() error {
+type ctfDB struct {
+	*sql.DB
+}
+
+func openConnection() (*ctfDB, error) {
 	var err error
-	db, err = sql.Open("postgres", connString)
+	db, err := sql.Open("postgres", connString)
 
-	return err
+	ctfDB := &ctfDB{db}
+	return ctfDB, err
 }
 
 // openConnection() must be called before this method
-func createUserTable() error {
+func (db *ctfDB) createUserTable() error {
 	_, err := db.Exec(
 		"CREATE TABLE IF NOT EXISTS user (" +
 			"username varchar(20) UNIQUE," +

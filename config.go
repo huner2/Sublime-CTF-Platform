@@ -16,13 +16,15 @@ type configT struct {
 	useTLS      bool
 	certificate *os.File
 	keyFile     *os.File
+	db          *ctfDB
 	ctfPrefs    *ctfT
 }
 
-func loadConfig() error {
+func loadConfig() (*configT, error) {
+	config := &configT{}
 	cfg, err := ini.Load("config.ini")
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	config.ip = cfg.Section("server").Key("ip").String()
@@ -31,15 +33,15 @@ func loadConfig() error {
 	if config.useTLS {
 		config.certificate, err = os.Open(cfg.Section("server").Key("certificate").String())
 		if err != nil {
-			return err
+			return nil, err
 		}
 		config.keyFile, err = os.Open(cfg.Section("server").Key("key_file").String())
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
 	config.ctfPrefs = &ctfT{}
 	config.ctfPrefs.title = cfg.Section("ctf").Key("title").String()
 
-	return nil
+	return config, nil
 }

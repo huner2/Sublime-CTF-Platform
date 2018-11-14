@@ -10,10 +10,18 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var config configT
 var frame = pongo2.Must(pongo2.FromFile("./templates/frame.html")) // Only frame can be pre-compiled from what I can tell
 
-func indexView(w http.ResponseWriter, r *http.Request) {
+type ctfHandler struct {
+	*configT
+	handler func(config *configT, w http.ResponseWriter, r *http.Request)
+}
+
+func (ctfh *ctfHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	ctfh.handler(ctfh.configT, w, r)
+}
+
+func indexView(config *configT, w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8") // Explicitly set content-type
 	ctx := pongo2.Context{
 		"title": config.ctfPrefs.title,
@@ -25,14 +33,26 @@ func indexView(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	if cerr := loadConfig(); cerr != nil {
+	config, cerr := loadConfig()
+	if cerr != nil {
 		log.Fatal("Could not load config.ini")
 	}
+
+	// Init db
+	db, dberr := openConnection()
+	if dberr != nil {
+		log.Fatal("Could not connect to db")
+	}
+	if dberr = db.createUserTable(); dberr != nil {
+		log.Fatal("Could not create user table")
+	}
+
+	config.db = db
 
 	r := mux.NewRouter()
 
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
-	r.HandleFunc("/", indexView)
+	r.Handle("/", &ctfHandler{config, indexView})
 
 	srv := &http.Server{
 		Handler:      r,
