@@ -5,12 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/flosch/pongo2"
-
 	"github.com/gorilla/mux"
 )
-
-var frame = pongo2.Must(pongo2.FromFile("./templates/frame.html")) // Only frame can be pre-compiled from what I can tell
 
 type ctfHandler struct {
 	*configT
@@ -21,30 +17,19 @@ func (ctfh *ctfHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctfh.handler(ctfh.configT, w, r)
 }
 
-func indexView(config *configT, w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8") // Explicitly set content-type
-	ctx := pongo2.Context{
-		"title": config.ctfPrefs.title,
-		"page":  "index.html",
-	}
-	if err := frame.ExecuteWriter(ctx, w); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-}
-
 func main() {
 	config, cerr := loadConfig()
 	if cerr != nil {
-		log.Fatal("Could not load config.ini")
+		log.Fatal("Could not load config.ini with error: " + cerr.Error())
 	}
 
 	// Init db
 	db, dberr := openConnection()
 	if dberr != nil {
-		log.Fatal("Could not connect to db")
+		log.Fatal("Could not connect to db with error: " + dberr.Error())
 	}
 	if dberr = db.createUserTable(); dberr != nil {
-		log.Fatal("Could not create user table")
+		log.Fatal("Could not create user table with error: " + dberr.Error())
 	}
 
 	config.db = db

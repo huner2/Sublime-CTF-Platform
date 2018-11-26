@@ -1,4 +1,4 @@
-default: config.go server.go db.go
+default: config.go server.go db.go views.go
 	go build -o ctfExec
 deps:
 	go get -u github.com/gorilla/mux

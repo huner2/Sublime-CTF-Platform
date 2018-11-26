@@ -6,7 +6,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var connString = "postgres://ctfu:ctuf@localhost/ctf"
+var connString = "postgres://ctfu:ctfu@localhost/ctf?sslmode=disable"
 
 type ctfDB struct {
 	*sql.DB
@@ -23,13 +23,13 @@ func openConnection() (*ctfDB, error) {
 // openConnection() must be called before this method
 func (db *ctfDB) createUserTable() error {
 	_, err := db.Exec(
-		"CREATE TABLE IF NOT EXISTS user (" +
+		"CREATE TABLE IF NOT EXISTS USERS (" +
 			"username varchar(20) UNIQUE," +
 			"salt varchar(16) NOT NULL," +
 			"hash varchar(32) NOT NULL," +
 			"email varchar(320) UNIQUE," +
 			"admin integer NOT NULL DEFAULT '0'," +
-			"PRIMARY KEY (id)" +
+			"id integer PRIMARY KEY" +
 			");")
 	return err
 }
