@@ -38,6 +38,7 @@ func main() {
 
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	r.Handle("/login", &viewHandler{config, loginView})
+	r.Handle("/register", &viewHandler{config, registerSubmit}).Methods("POST")
 	r.Handle("/", &viewHandler{config, indexView})
 
 	srv := &http.Server{
