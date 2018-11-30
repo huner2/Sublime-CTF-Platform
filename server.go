@@ -8,13 +8,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type ctfHandler struct {
+type viewHandler struct {
 	*configT
 	handler func(config *configT, w http.ResponseWriter, r *http.Request)
 }
 
-func (ctfh *ctfHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	ctfh.handler(ctfh.configT, w, r)
+func (vh *viewHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	vh.handler(vh.configT, w, r)
 }
 
 func main() {
@@ -37,7 +37,8 @@ func main() {
 	r := mux.NewRouter()
 
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
-	r.Handle("/", &ctfHandler{config, indexView})
+	r.Handle("/login", &viewHandler{config, loginView})
+	r.Handle("/", &viewHandler{config, indexView})
 
 	srv := &http.Server{
 		Handler:      r,

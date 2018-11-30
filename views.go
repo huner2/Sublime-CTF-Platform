@@ -18,3 +18,14 @@ func indexView(config *configT, w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
+
+func loginView(config *configT, w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	ctx := pongo2.Context{
+		"title": config.ctfPrefs.title,
+		"page":  "login.html",
+	}
+	if err := frame.ExecuteWriter(ctx, w); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}

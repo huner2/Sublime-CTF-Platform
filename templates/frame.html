@@ -24,6 +24,9 @@
                                 <a class="nav-link" href="/challenges">Challenges</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="/scoreboard">Scoreboard</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="/login">Login</a>
                             </li>
                         </ul>
@@ -34,8 +37,21 @@
         <div class="container content" id="main">
             {% include page %}
         </div>
+        <div class="navbar fixed-bottom navbar-light bg-light footer">
+            <div class="container-fluid">
+                <div class="row w-100">
+                    <div class="col-sm"></div>
+                    <div class="col-sm text-center">
+                        {{ title }}
+                    </div>
+                    <div class="col-sm text-right">
+                        <a target="_blank" href="https://github.com/huner2/Sublime-CTF-Platform">Sublime CTF Platform</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <script src="static/js/jquery-3.3.1.min.js"></script>
-    <script src="static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="static/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
 </body>
 </html>

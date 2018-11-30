@@ -15,3 +15,14 @@ body, html {
     border-bottom-left-radius: .5rem;
     border-bottom-right-radius: .5rem;
 }
+
+.inform-btn {
+    width: 50%;
+    left: 25%;
+    position: relative;
+}
+
+.footer {
+    margin-top: 5px;
+    border-radius: 0 !important;
+}
