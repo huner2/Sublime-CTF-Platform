@@ -26,9 +26,15 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/scoreboard">Scoreboard</a>
                             </li>
+                            {% if !login %}
                             <li class="nav-item">
                                 <a class="nav-link" href="/login">Login</a>
                             </li>
+                            {% else %}
+                            <span class="navbar-text">
+                                Logged in as {{ user }}.  <a href="#" id="logout">Logout?</a>
+                            </span>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
@@ -53,5 +59,6 @@
     </div>
     <script type="text/javascript" src="static/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="static/js/frame.js"></script>
 </body>
 </html>

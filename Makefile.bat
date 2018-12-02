@@ -19,6 +19,7 @@ if /I %1 == run     goto :run
 	go get -u github.com/flosch/pongo2
 	go get -u gopkg.in/ini.v1
 	go get -u github.com/lib/pq
+    go get -u golang.org/x/crypto/blake2b
     @echo off
     goto :eof
 

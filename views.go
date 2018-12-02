@@ -11,11 +11,14 @@ import (
 	"strings"
 	"time"
 
+	"golang.org/x/crypto/blake2b"
+
 	"github.com/flosch/pongo2"
 )
 
 var frame = pongo2.Must(pongo2.FromFile("./templates/frame.html")) // Only frame can be pre-compiled from what I can tell
 var userRe = regexp.MustCompile(`[^[:alnum:]]`)
+var emailRe = regexp.MustCompile(`.+\@.+\..+`)
 var letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 func randStringBytes(n int) string {
@@ -26,29 +29,92 @@ func randStringBytes(n int) string {
 	return string(b)
 }
 
-func indexView(config *configT, w http.ResponseWriter, r *http.Request) {
+func defaultContext(page string, user *userT, config *configT) *pongo2.Context {
+	return &pongo2.Context{
+		"title": config.ctfPrefs.title,
+		"page":  page,
+		"user": func() string {
+			if user != nil {
+				return user.username
+			}
+			return ""
+		}(),
+		"login": user != nil,
+	}
+}
+
+func indexView(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8") // Explicitly set content-type
-	ctx := pongo2.Context{
-		"title": config.ctfPrefs.title,
-		"page":  "index.html",
-	}
-	if err := frame.ExecuteWriter(ctx, w); err != nil {
+	ctx := defaultContext("index.html", user, config)
+	if err := frame.ExecuteWriter(*ctx, w); err != nil {
+		log.Println("Unable to render index.html")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
-func loginView(config *configT, w http.ResponseWriter, r *http.Request) {
+func loginView(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	ctx := pongo2.Context{
-		"title": config.ctfPrefs.title,
-		"page":  "login.html",
-	}
-	if err := frame.ExecuteWriter(ctx, w); err != nil {
+	ctx := defaultContext("login.html", user, config)
+	if err := frame.ExecuteWriter(*ctx, w); err != nil {
+		log.Println("Unable to render login.html")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
-func registerSubmit(config *configT, w http.ResponseWriter, r *http.Request) {
+func loginSubmit(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	decoder := json.NewDecoder(r.Body)
+	var data map[string]interface{}
+	if jerr := decoder.Decode(&data); jerr != nil {
+		log.Println("Unable to decode data")
+		http.Error(w, jerr.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	uname, ok := data["uname"].(string)
+	if !ok {
+		log.Println("Invalid username in login request")
+		w.Write([]byte("{\"success\": false}"))
+		return
+	}
+
+	pword, ok := data["pword"].(string)
+	if !ok {
+		log.Println("Invalid password in login request")
+		w.Write([]byte("{\"success\": false}"))
+		return
+	}
+
+	uname = strings.TrimSpace(uname)
+	info := config.db.loginUser(uname)
+	if info == nil {
+		log.Println("No user with that username")
+		w.Write([]byte("{\"success\": false}"))
+		return
+	}
+
+	rawhash := sha256.Sum256([]byte(info.salt + pword))
+	hash := hex.EncodeToString(rawhash[:])
+	if info.hash != hash {
+		log.Println("Incorrect password")
+		w.Write([]byte("{\"success\": false}"))
+		return
+	}
+
+	created := time.Now().Unix()
+	tokey := uname + string(created) + randStringBytes(16)
+	rawkey := blake2b.Sum256([]byte(tokey))
+	key := hex.EncodeToString(rawkey[:])
+	err := config.db.createSession(info.id, created, key)
+	if err != nil {
+		log.Println("Unable to create session")
+		w.Write([]byte("{\"success\": false}"))
+	}
+
+	w.Write([]byte("{\"success\": true, \"key\": \"" + key + "\"}"))
+}
+
+func registerSubmit(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	decoder := json.NewDecoder(r.Body)
 	var data map[string]interface{}
@@ -79,6 +145,9 @@ func registerSubmit(config *configT, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	uname = strings.TrimSpace(uname)
+	email = strings.TrimSpace(email)
+
 	if len(uname) < 4 || len(uname) > 20 || userRe.MatchString(uname) {
 		log.Println("Invalid username length")
 		w.Write([]byte("{\"success\": false, \"error\": \"ulen\"}"))
@@ -89,14 +158,11 @@ func registerSubmit(config *configT, w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{\"success\": false, \"error\": \"plen\"}"))
 		return
 	}
-	if len(email) >= 320 {
+	if len(email) >= 320 || !emailRe.MatchString(email) {
 		log.Println("Invalid email length")
 		w.Write([]byte("{\"success\": false, \"error\": \"elen\"}"))
 		return
 	}
-
-	uname = strings.TrimSpace(uname)
-	email = strings.TrimSpace(email)
 
 	if config.db.userExists(uname) {
 		log.Println("User already exists with name: " + uname)
@@ -113,12 +179,24 @@ func registerSubmit(config *configT, w http.ResponseWriter, r *http.Request) {
 		admin = 1
 	}
 
-	err := config.db.createUser(uname, salt, hash, email, admin)
+	uid, err := config.db.createUser(uname, salt, hash, email, admin)
 	if err != nil {
 		log.Println("Couldn't create user")
 		http.Error(w, "Couldn't create user", http.StatusInternalServerError)
 		return
 	}
 
-	w.Write([]byte("{\"success\": true}"))
+	created := time.Now().Unix()
+	tokey := uname + string(created) + randStringBytes(16)
+	rawkey := blake2b.Sum256([]byte(tokey))
+	key := hex.EncodeToString(rawkey[:])
+	err = config.db.createSession(uid, created, key)
+
+	if err != nil {
+		log.Println("Unable to create session")
+		http.Error(w, "Couldn't create session", http.StatusInternalServerError)
+		return
+	}
+
+	w.Write([]byte("{\"success\": true, \"key\": \"" + key + "\"}"))
 }

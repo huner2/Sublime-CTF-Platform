@@ -15,6 +15,12 @@
         <div class="tab-content">
             <div class="tab-pane show active" id="login">
                 <form>
+                    <div class="alert alert-danger alert-dismissible" id="incorrect" style="display:none;">
+                        Incorrect username or password
+                        <button type="button" class="close" id="close">
+                            <span>&times;</span>
+                        </button>
+                    </div>
                     <div class="form-group">
                         <label>Username</label>
                         <input type="text" class="form-control" id="login-username"placeholder="Enter username">
@@ -35,15 +41,26 @@
                     <div class="form-group">
                         <label>Username</label>
                         <input type="text" class="form-control" id="register-username" placeholder="Enter username">
+                        <div class="invalid-feedback">
+                            <span id="uinv">
+                                Usernames are alphanumeric and must be between 4-20 characters inclusive
+                            </span>
+                        </div>
                     </div>
                     <div class="form-group">
                             <label>Email address</label>
                             <input type="email" class="form-control" id="register-email" placeholder="Enter email">
                             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            <div class="invalid-feedback">
+                                Please enter a valid email address
+                            </div>
                             </div>
                     <div class="form-group">
                         <label>Password</label>
                         <input type="password" class="form-control" id="register-password" placeholder="Password">
+                        <div class="invalid-feedback">
+                            Passwords must be at least 8 characters
+                        </div>
                     </div>
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="register-check">
