@@ -12,7 +12,8 @@ import (
 
 type viewHandler struct {
 	*configT
-	handler func(user *userT, config *configT, w http.ResponseWriter, r *http.Request)
+	authRequired bool
+	handler      func(user *userT, config *configT, w http.ResponseWriter, r *http.Request)
 }
 
 func (vh *viewHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -20,6 +21,12 @@ func (vh *viewHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var user *userT
 	if key != nil {
 		user = vh.configT.db.getSession(key.Value)
+		if user == nil {
+			w.Header().Add("Set-Cookie", "key=invalid; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT")
+		}
+	}
+	if vh.authRequired && user == nil {
+		http.Redirect(w, r, "/login", 307)
 	}
 	vh.handler(user, vh.configT, w, r)
 }
@@ -47,10 +54,11 @@ func main() {
 	r := mux.NewRouter()
 
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
-	r.Handle("/login", &viewHandler{config, loginView}).Methods("GET")
-	r.Handle("/login", &viewHandler{config, loginSubmit}).Methods("POST")
-	r.Handle("/register", &viewHandler{config, registerSubmit}).Methods("POST")
-	r.Handle("/", &viewHandler{config, indexView})
+	r.Handle("/challenges", &viewHandler{config, true, challengeView}).Methods("GET")
+	r.Handle("/login", &viewHandler{config, false, loginView}).Methods("GET")
+	r.Handle("/login", &viewHandler{config, false, loginSubmit}).Methods("POST")
+	r.Handle("/register", &viewHandler{config, false, registerSubmit}).Methods("POST")
+	r.Handle("/", &viewHandler{config, false, indexView})
 
 	srv := &http.Server{
 		Handler:      r,

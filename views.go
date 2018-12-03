@@ -52,6 +52,15 @@ func indexView(user *userT, config *configT, w http.ResponseWriter, r *http.Requ
 	}
 }
 
+func challengeView(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	ctx := defaultContext("challenges.html", user, config)
+	if err := frame.ExecuteWriter(*ctx, w); err != nil {
+		log.Println("Unable to render challenges.html")
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
 func loginView(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	ctx := defaultContext("login.html", user, config)
