@@ -48,7 +48,9 @@ func main() {
 	if dberr = db.createSessionTable(); dberr != nil {
 		log.Fatal("Could not create session table with error: " + dberr.Error())
 	}
-
+	if dberr = db.createChallengeTables(); dberr != nil {
+		log.Fatal("Could not create challenge tables with error: " + dberr.Error())
+	}
 	config.db = db
 
 	r := mux.NewRouter()

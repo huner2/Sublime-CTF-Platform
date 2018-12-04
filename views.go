@@ -39,6 +39,12 @@ func defaultContext(page string, user *userT, config *configT) *pongo2.Context {
 			}
 			return ""
 		}(),
+		"admin": func() bool {
+			if user != nil {
+				return user.admin == 1
+			}
+			return false
+		}(),
 		"login": user != nil,
 	}
 }

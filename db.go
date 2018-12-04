@@ -49,6 +49,7 @@ func (db *ctfDB) createUserTable() error {
 }
 
 // openConnection() must be called before this method
+// user table must exist before this method is called
 func (db *ctfDB) createSessionTable() error {
 	_, err := db.Exec(
 		"CREATE TABLE IF NOT EXISTS SESSIONS (" +
@@ -58,6 +59,40 @@ func (db *ctfDB) createSessionTable() error {
 			"key varchar(64)," +
 			"PRIMARY KEY (id,uid)" +
 			");")
+	return err
+}
+
+// openConnection() must be called before this method
+func (db *ctfDB) createChallengeTables() error {
+	_, err := db.Exec(
+		"CREATE TABLE IF NOT EXISTS CATEGORIES (" +
+			"id SERIAL PRIMARY KEY," +
+			"name varchar(40)" +
+			");")
+	if err != nil {
+		return err
+	}
+	_, err = db.Exec(
+		"CREATE TABLE IF NOT EXISTS CHALLENGES (" +
+			"id SERIAL PRIMARY KEY," +
+			"category integer REFERENCES CATEGORIES(id)," +
+			"name varchar(64)," +
+			"flag varchar(256)," +
+			"points integer," +
+			"solves integer" +
+			");")
+
+	if err != nil {
+		return err
+	}
+	_, err = db.Exec(
+		"CREATE TABLE IF NOT EXISTS PREREQS (" +
+			"id SERIAL," +
+			"cid integer REFERENCES CHALLENGES(id)," +
+			"preid integer REFERENCES CHALLENGES(id)," +
+			"PRIMARY KEY(id, cid, preid)" +
+			");")
+
 	return err
 }
 
