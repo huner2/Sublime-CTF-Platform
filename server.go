@@ -60,6 +60,7 @@ func main() {
 	r.Handle("/login", &viewHandler{config, false, loginView}).Methods("GET")
 	r.Handle("/login", &viewHandler{config, false, loginSubmit}).Methods("POST")
 	r.Handle("/register", &viewHandler{config, false, registerSubmit}).Methods("POST")
+	r.Handle("/admin", &viewHandler{config, true, adminDashboardView}).Methods("GET")
 	r.Handle("/", &viewHandler{config, false, indexView})
 
 	srv := &http.Server{
