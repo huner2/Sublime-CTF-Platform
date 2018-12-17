@@ -81,6 +81,20 @@ func adminDashboardView(user *userT, config *configT, w http.ResponseWriter, r *
 	}
 }
 
+func adminPagesView(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
+	if user.admin != 1 {
+		log.Println("Non-admin attempt to access pages.html")
+		http.Error(w, "Not an admin", http.StatusUnauthorized)
+		return
+	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	ctx := defaultContext("pages.html", user, config)
+	if err := frame.ExecuteWriter(*ctx, w); err != nil {
+		log.Println("Unable to render pages.html")
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
 func loginView(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	ctx := defaultContext("login.html", user, config)

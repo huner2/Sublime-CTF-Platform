@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"time"
 
 	ini "gopkg.in/ini.v1"
 )
@@ -18,6 +19,7 @@ type configT struct {
 	keyFile     *os.File
 	db          *ctfDB
 	ctfPrefs    *ctfT
+	startTime   int64
 }
 
 func loadConfig() (*configT, error) {
@@ -42,6 +44,8 @@ func loadConfig() (*configT, error) {
 	}
 	config.ctfPrefs = &ctfT{}
 	config.ctfPrefs.title = cfg.Section("ctf").Key("title").String()
+
+	config.startTime = time.Now().Unix()
 
 	return config, nil
 }
