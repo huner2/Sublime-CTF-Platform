@@ -1,10 +1,10 @@
-#content {
-    height: 100%;
+html {
+    min-height: 100%;
     position: relative;
 }
 
-body, html {
-    height: 100%;
+body {
+    margin-bottom: 74px;
 }
 
 #main {
@@ -23,6 +23,21 @@ body, html {
 }
 
 .footer {
-    margin-top: 5px;
-    border-radius: 0 !important;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 54px;
+    line-height: 54px;
+}
+
+#editor {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+#jumbo-pages-content {
+    min-height: 300px;
 }

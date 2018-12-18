@@ -9,59 +9,57 @@
     <link rel="stylesheet" href="/static/css/site.css">
 </head>
 <body>
-    <div class="content">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container">
-                    <a class="navbar-brand" href="/">{{ title }}</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav nav-fill w-100 align-items-start">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/challenges">Challenges</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/scoreboard">Scoreboard</a>
-                            </li>
-                            {% if admin %}
-                            <li class ="nav-item">
-                                <a class="nav-link" href="/admin">Admin Dashboard</a>
-                            </li>
-                            {% endif %}
-                            {% if !login %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="/login">Login</a>
-                            </li>
-                            {% else %}
-                            <span class="navbar-text">
-                                Logged in as {{ user }}.  <a href="#" id="logout">Logout?</a>
-                            </span>
-                            {% endif %}
-                        </ul>
-                    </div>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="/">{{ title }}</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav nav-fill w-100 align-items-start">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/challenges">Challenges</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/scoreboard">Scoreboard</a>
+                        </li>
+                        {% if admin %}
+                        <li class ="nav-item">
+                            <a class="nav-link" href="/admin">Admin Dashboard</a>
+                        </li>
+                        {% endif %}
+                        {% if !login %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                        {% else %}
+                        <span class="navbar-text">
+                            Logged in as {{ user }}.  <a href="#" id="logout">Logout?</a>
+                        </span>
+                        {% endif %}
+                    </ul>
                 </div>
-            </nav>
-        </div>
-        <div class="container content" id="main">
-            {% include page %}
-        </div>
-        <div class="navbar fixed-bottom navbar-light bg-light footer">
-            <div class="container-fluid">
-                <div class="row w-100">
-                    <div class="col-sm"></div>
-                    <div class="col-sm text-center">
-                        {{ title }}
-                    </div>
-                    <div class="col-sm text-right">
-                        <a target="_blank" href="https://github.com/huner2/Sublime-CTF-Platform">Sublime CTF Platform</a>
-                    </div>
+            </div>
+        </nav>
+    </div>
+    <div class="container content" id="main">
+        {% include page %}
+    </div>
+    <footer class="navbar-light bg-light footer">
+        <div class="container-fluid">
+            <div class="row w-100">
+                <div class="col-sm"></div>
+                <div class="col-sm text-center">
+                    {{ title }}
+                </div>
+                <div class="col-sm text-right">
+                    <a target="_blank" href="https://github.com/huner2/Sublime-CTF-Platform">Sublime CTF Platform</a>
                 </div>
             </div>
         </div>
-    </div>
+    </footer>
     <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/js/frame.js"></script>

@@ -1,4 +1,4 @@
-<div class="jumbotron" style="padding: 2rem 2rem; text-align:center;">
+<div class="jumbotron" id="jumbo-pages-content" style="padding: 2rem 2rem; text-align:center;">
     <ul class="nav nav-tabs nav-fill">
         <li class="nav-item">
             <a class="nav-link" href="/admin">Statistics</a>
@@ -14,4 +14,22 @@
         </li>
     </ul>
     <br>
+    <div class="row">
+        <div class="col-4">
+            <div class="list-group">
+                {% for page in pages %}
+                    <a class="list-group-item list-group-item-action" href="#" id="#page-{{page}}">
+                        {{ page }}
+                    </a>
+                {% endfor %}
+                </div>
+        </div>
+        <div class="col-8">
+            <pre id="editor">
+                Start point
+            </pre>
+        </div>
+    </div>
 </div>
+<script src="/static/js/ace.js" type="text/javascript" defer="defer"></script>
+<script src="/static/js/pages.js" type="text/javascript" defer="defer"></script>

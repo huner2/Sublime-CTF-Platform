@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/http"
@@ -51,7 +52,7 @@ func defaultContext(page string, user *userT, config *configT) *pongo2.Context {
 
 func indexView(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8") // Explicitly set content-type
-	ctx := defaultContext("index.html", user, config)
+	ctx := defaultContext("../pages/index.html", user, config)
 	if err := frame.ExecuteWriter(*ctx, w); err != nil {
 		log.Println("Unable to render index.html")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -89,6 +90,18 @@ func adminPagesView(user *userT, config *configT, w http.ResponseWriter, r *http
 	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	ctx := defaultContext("pages.html", user, config)
+	files, err := ioutil.ReadDir("./pages")
+	if err != nil {
+		log.Println("Unable to list pages")
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	flist := make([]string, 0)
+	for _, f := range files {
+		if strings.HasSuffix(f.Name(), ".html") {
+			flist = append(flist, strings.TrimSuffix(f.Name(), ".html"))
+		}
+	}
+	(*ctx)["pages"] = flist
 	if err := frame.ExecuteWriter(*ctx, w); err != nil {
 		log.Println("Unable to render pages.html")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
