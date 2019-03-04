@@ -4,10 +4,12 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"io"
 	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -15,11 +17,13 @@ import (
 	"golang.org/x/crypto/blake2b"
 
 	"github.com/flosch/pongo2"
+	"github.com/gorilla/mux"
 )
 
 var frame = pongo2.Must(pongo2.FromFile("./templates/frame.html")) // Only frame can be pre-compiled from what I can tell
 var userRe = regexp.MustCompile(`[^[:alnum:]]`)
 var emailRe = regexp.MustCompile(`.+\@.+\..+`)
+var pageRe = regexp.MustCompile(`([^a-zA-Z\d_-])`)
 var letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 func randStringBytes(n int) string {
@@ -94,6 +98,7 @@ func adminPagesView(user *userT, config *configT, w http.ResponseWriter, r *http
 	if err != nil {
 		log.Println("Unable to list pages")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 	flist := make([]string, 0)
 	for _, f := range files {
@@ -106,6 +111,106 @@ func adminPagesView(user *userT, config *configT, w http.ResponseWriter, r *http
 		log.Println("Unable to render pages.html")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+func getPageSource(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
+	if user.admin != 1 {
+		log.Println("Non-admin attempt to access pages.html")
+		http.Error(w, "Not an admin", http.StatusUnauthorized)
+		return
+	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	vars := mux.Vars(r)
+	page := vars["page"]
+	if pageRe.MatchString(page) {
+		log.Println("Invalid page name")
+		http.Error(w, "Invalid page name", http.StatusBadRequest)
+		return
+	}
+	file, err := os.Open("./pages/" + page + ".html")
+	if err != nil {
+		log.Println("Unable to open the given page")
+		http.Error(w, "Unknown Page", http.StatusBadRequest)
+		return
+	}
+	io.Copy(w, file)
+}
+
+func updatePageSource(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
+	if user.admin != 1 {
+		log.Println("Non-admin attempt to access pages.html")
+		http.Error(w, "Not an admin", http.StatusUnauthorized)
+		return
+	}
+	vars := mux.Vars(r)
+	page := vars["page"]
+	if pageRe.MatchString(page) {
+		log.Println("Invalid page name")
+		http.Error(w, "Invalid page name", http.StatusBadRequest)
+		return
+	}
+	decoder := json.NewDecoder(r.Body)
+	var data map[string]interface{}
+	if jerr := decoder.Decode(&data); jerr != nil {
+		log.Println("Unable to decode data")
+		http.Error(w, jerr.Error(), http.StatusInternalServerError)
+		return
+	}
+	operation, ok := data["operation"].(string)
+	if !ok {
+		log.Println("Unable to get operation")
+		http.Error(w, "Invalid operation", http.StatusBadRequest)
+		return
+	}
+	if operation == "create" {
+		if _, err := os.Stat("./pages/" + page + ".html"); err == nil {
+			log.Println("Page already exists")
+			http.Error(w, "Page already exists", http.StatusBadRequest)
+			return
+		}
+		_, err := os.Create("./pages/" + page + ".html")
+		if err != nil {
+			log.Println("Unable to create file for new page")
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	} else if operation == "delete" {
+		if page == "index" {
+			log.Println("Cannot delete index")
+			http.Error(w, "Cannot delete index", http.StatusBadRequest)
+			return
+		}
+		err := os.Remove("./pages/" + page + ".html")
+		if err != nil {
+			log.Println("Unable to delete page")
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	} else if operation == "update" {
+		contents, ok := data["contents"].(string)
+		if !ok {
+			log.Println("Unable to get contents")
+			http.Error(w, "Invalid contents", http.StatusBadRequest)
+			return
+		}
+		f, err := os.OpenFile("./pages/"+page+".html", os.O_WRONLY|os.O_TRUNC, 644)
+		if err != nil {
+			log.Println("Unable to open given page")
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		_, err = f.WriteString(contents)
+		if err != nil {
+			log.Println("Unable to write to file")
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	} else {
+		log.Println("Invalid operation for updatePage")
+		http.Error(w, "Invalid operation", http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
 }
 
 func loginView(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
@@ -165,6 +270,7 @@ func loginSubmit(user *userT, config *configT, w http.ResponseWriter, r *http.Re
 	if err != nil {
 		log.Println("Unable to create session")
 		w.Write([]byte("{\"success\": false}"))
+		return
 	}
 
 	w.Write([]byte("{\"success\": true, \"key\": \"" + key + "\"}"))

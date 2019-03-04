@@ -38,22 +38,46 @@ body {
 }
 
 #editor {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    overflow: hidden;
+    text-align: left;
+}
+
+#editor .btn {
+    width: 30%;
+}
+
+#editor .btn:first{
+    float: left;
+}
+
+#editor .btn:last-of-type{
+    float:right;
 }
 
 #jumbo-pages-content {
     height: 100%;
 }
 
+.list-group {
+    height: 100%;
+    overflow: auto;
+}
+
+.list-group-item:focus {
+    background-color: #375a7f !important;
+    border-color: #375a7f;
+}
+
 .CodeMirror {
     text-align: left !important;
-    min-height: 100%;
+    height: 100%;
+    max-height: calc(100% - 60px);
 }
 
 #jumbo-pages-content .row {
     height: calc(100% - 3rem);
+}
+
+#newpage {
+    background-color: #3498DB !important;
 }

@@ -18,18 +18,95 @@
     <div class="row">
         <div class="col-4">
             <div class="list-group">
+                <span id="pages">
                 {% for page in pages %}
-                    <a class="list-group-item list-group-item-action" href="#" id="#page-{{page}}">
+                    <a class="list-group-item list-group-item-action page-selector" href="#" id="page-{{ page }}">
                         {{ page }}
                     </a>
                 {% endfor %}
-                </div>
+                </span>
+                <a class="list-group-item list-group-item-action btn-info" data-toggle="modal" data-target="#newModal" href="#" id="newpage">
+                    New Page
+                </a>
+            </div>
         </div>
-        <div class="col-8">
+        <div class="col-8" id="editor">
             <textarea name="page_content" id="page-content"></textarea>
+            <br>
+            <button type="button" class="btn btn-success" id="save-page" disabled>Save</button>
+            <button type="button" class="btn btn-danger" id="delete-page" disabled>Delete</button>
         </div>
     </div>
 </div>
+<div class="modal fade" id="newModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">New Page</h5>
+            <button type="button" class="close" data-dismiss="modal">
+                <span>&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" id="incorrect" style="display:none;">
+                    <span id="incorrectText"></span>
+                    <button type="button" class="close" id="close">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label for="newFileName">New page name</label>
+                    <input type="text" class="form-control" placeholder="New-page-name" id="newFileName">
+                    <small class="form-text text-muted">Can only contain <i>a-Z 0-9 _ -</i></small>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close">Close</button>
+            <button type="button" class="btn btn-primary" id="createPage">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Are you sure you want to delete <i><span id="pageToDelete"></span></i>?</h5>
+            <button type="button" class="close" data-dismiss="modal">
+                <span>&times;</span>
+            </button>
+            </div>
+            <div class="modal-footer">
+            <div class="alert alert-danger alert-dismissible" id="error" style="display:none;">
+                    Server error, please try again!
+                    <button type="button" class="close" id="close">
+                        <span>&times;</span>
+                    </button>
+                </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close">Close</button>
+            <button type="button" class="btn btn-danger" id="deletePage">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="saveModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title">Failed to save</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    There was an error trying to save your page, please try again.
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 <script src="/static/js/codemirror.js" type="text/javascript" defer="defer"></script>
 <script src="/static/js/css.js" type="text/javascript" defer="defer"></script>
 <script src="/static/js/javascript.js" type="text/javascript" defer="defer"></script>
