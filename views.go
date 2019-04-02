@@ -37,6 +37,7 @@ func randStringBytes(n int) string {
 func defaultContext(page string, user *userT, config *configT) *pongo2.Context {
 	return &pongo2.Context{
 		"title": config.ctfPrefs.title,
+		"pages": config.pages,
 		"page":  page,
 		"user": func() string {
 			if user != nil {
@@ -174,11 +175,17 @@ func updatePageSource(user *userT, config *configT, w http.ResponseWriter, r *ht
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		config.pages = append(config.pages, page)
 	} else if operation == "delete" {
 		if page == "index" {
 			log.Println("Cannot delete index")
 			http.Error(w, "Cannot delete index", http.StatusBadRequest)
 			return
+		}
+		for i, tpage := range config.pages {
+			if tpage == page {
+				config.pages = append(config.pages[:i], config.pages[i+1:]...)
+			}
 		}
 		err := os.Remove("./pages/" + page + ".html")
 		if err != nil {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"os"
 	"time"
 
@@ -19,6 +20,7 @@ type configT struct {
 	keyFile     *os.File
 	db          *ctfDB
 	ctfPrefs    *ctfT
+	pages       []string
 	startTime   int64
 }
 
@@ -46,6 +48,16 @@ func loadConfig() (*configT, error) {
 	config.ctfPrefs.title = cfg.Section("ctf").Key("title").String()
 
 	config.startTime = time.Now().Unix()
+	pages, err := ioutil.ReadDir("./pages")
+	if err != nil {
+		return nil, err
+	}
+	for _, page := range pages {
+		pName := page.Name()[:len(page.Name())-5]
+		if pName != "index" {
+			config.pages = append(config.pages, pName)
+		}
+	}
 
 	return config, nil
 }
