@@ -54,9 +54,7 @@ func loadConfig() (*configT, error) {
 	}
 	for _, page := range pages {
 		pName := page.Name()[:len(page.Name())-5]
-		if pName != "index" {
-			config.pages = append(config.pages, pName)
-		}
+		config.pages = append(config.pages, pName)
 	}
 
 	return config, nil

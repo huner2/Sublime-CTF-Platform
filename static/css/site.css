@@ -81,3 +81,7 @@ body {
 #newpage {
     background-color: #3498DB !important;
 }
+
+#pages .page-selector:last-child {
+    border-radius: 0;
+}

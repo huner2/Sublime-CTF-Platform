@@ -27,9 +27,11 @@
                             <a class="nav-link" href="/scoreboard">Scoreboard</a>
                         </li>
                         {% for page in pages %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="/{{ page }}">{{ page }}</a>
-                            </li>
+                            {% if page != "index" %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/{{ page | lower }}">{{ page }}</a>
+                                </li>
+                            {% endif %}
                         {% endfor %}
                         {% if admin %}
                         <li class ="nav-item">

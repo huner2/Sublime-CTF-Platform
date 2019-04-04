@@ -64,6 +64,7 @@ func main() {
 	r.Handle("/admin/pages", &viewHandler{config, true, adminPagesView}).Methods("GET")
 	r.Handle("/admin/pages/{page}", &viewHandler{config, true, getPageSource}).Methods("GET")
 	r.Handle("/admin/pages/{page}", &viewHandler{config, true, updatePageSource}).Methods("POST")
+	r.Handle("/{page}", &viewHandler{config, false, pageView}).Methods("GET")
 	r.Handle("/", &viewHandler{config, false, indexView})
 
 	srv := &http.Server{

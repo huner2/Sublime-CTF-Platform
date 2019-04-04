@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/http"
@@ -24,15 +23,6 @@ var frame = pongo2.Must(pongo2.FromFile("./templates/frame.html")) // Only frame
 var userRe = regexp.MustCompile(`[^[:alnum:]]`)
 var emailRe = regexp.MustCompile(`.+\@.+\..+`)
 var pageRe = regexp.MustCompile(`([^a-zA-Z\d_-])`)
-var letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-func randStringBytes(n int) string {
-	b := make([]byte, n)
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
-	}
-	return string(b)
-}
 
 func defaultContext(page string, user *userT, config *configT) *pongo2.Context {
 	return &pongo2.Context{
@@ -60,6 +50,23 @@ func indexView(user *userT, config *configT, w http.ResponseWriter, r *http.Requ
 	ctx := defaultContext("../pages/index.html", user, config)
 	if err := frame.ExecuteWriter(*ctx, w); err != nil {
 		log.Println("Unable to render index.html")
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func pageView(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	vars := mux.Vars(r)
+	page := vars["page"]
+	in, trueName := contains(config.pages, page)
+	if !in {
+		log.Println("Invalid page")
+		http.Error(w, "Invalid page", http.StatusNotFound)
+		return
+	}
+	ctx := defaultContext("../pages/"+trueName+".html", user, config)
+	if err := frame.ExecuteWriter(*ctx, w); err != nil {
+		log.Println("Unable to render page " + page)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -95,19 +102,6 @@ func adminPagesView(user *userT, config *configT, w http.ResponseWriter, r *http
 	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	ctx := defaultContext("pages.html", user, config)
-	files, err := ioutil.ReadDir("./pages")
-	if err != nil {
-		log.Println("Unable to list pages")
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	flist := make([]string, 0)
-	for _, f := range files {
-		if strings.HasSuffix(f.Name(), ".html") {
-			flist = append(flist, strings.TrimSuffix(f.Name(), ".html"))
-		}
-	}
-	(*ctx)["pages"] = flist
 	if err := frame.ExecuteWriter(*ctx, w); err != nil {
 		log.Println("Unable to render pages.html")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -218,6 +212,15 @@ func updatePageSource(user *userT, config *configT, w http.ResponseWriter, r *ht
 		return
 	}
 	w.WriteHeader(http.StatusOK)
+}
+
+func adminChallengeView(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=uft-8")
+	ctx := defaultContext("adminchallenges.html", user, config)
+	if err := frame.ExecuteWriter(*ctx, w); err != nil {
+		log.Println("Unable to render adminchallenges.html")
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func loginView(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {

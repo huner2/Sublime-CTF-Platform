@@ -10,7 +10,7 @@ $(document).ready(function() {
     });
 });
 
-$(".page-selector").on("click", function(e){
+$("#pages").on("click", ".page-selector", function(e){
     e.preventDefault();
     page = $(this).attr('id').substring(5);
     $.get("/admin/pages/" + page).done(function(data){
