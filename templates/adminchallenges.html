@@ -14,5 +14,131 @@
         </li>
     </ul>
     <br>
-    
+    <div class="row">
+        <div class="col-3" style="height:100%;">
+            <div class="list-group">
+                <span id="categories">
+                {% for cat in cats %}
+                    <a class="list-group-item list-group-item-action cat-selector" href="#" id="cat-{{ cat.name }}">
+                        {{ cat.name }}
+                        <button type="button" class="close" id="delete-{{ cat.name }}">
+                            <span>&times;</span>
+                        </button>
+                    </a>
+                {% endfor %}
+                </span>
+                <a class="list-group-item list-group-item-action btn-info" data-toggle="modal" data-target="#newModal" href="#" id="newcat">
+                    New Category
+                </a>
+            </div>
+        </div>
+        <div class="col-3" style="height:100%;">
+            {% for cat in cats %}
+                <div class="list-group chall-group" id="cat-challs-{{ cat.name }}" style="display: none;">
+                    <span id="challenges">
+
+                    </span>
+                    <a class="list-group-item list-group-item-action btn-info" href="#" id="newchall">
+                        New Challenge
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-6" style="height:100%;">
+            <form style="display:none;" id="newchallform">
+                <div class="form-group col-auto">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Name</span>
+                        </div>
+                        <input type="text" class="form-control" id="challenge-name" placeholder="New Challenge" required>
+                    </div>
+                </div>
+                <div class="form-group col-auto">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Description</span>
+                        </div>
+                        <textarea class="form-control" id="challenge-desc"></textarea> <!-- Make 512 max length -->
+                    </div>
+                </div>
+                <div class="form-group col-auto">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Flag</span>
+                        </div>
+                        <input type="text" class="form-control" id="challenge-flag" placeholder="ctf{flag}" required>
+                    </div>
+                </div>
+                <div class="form-group col-auto">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Points</span>
+                        </div>
+                        <input type="number" class="form-control" id="challenge-points" min="0" required>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="alert alert-danger alert-dismissible" id="incorrectChall" style="display:none;">
+                        <span id="incorrectChallText"></span>
+                        <button type="button" class="close" id="close">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <button class="btn btn-primary" id="save-challenge">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+<div class="modal fade" id="newModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">New Category</h5>
+            <button type="button" class="close" data-dismiss="modal">
+                <span>&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" id="incorrect" style="display:none;">
+                    <span id="incorrectText"></span>
+                    <button type="button" class="close" id="close">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label for="newCatName">New category name</label>
+                    <input type="text" class="form-control" placeholder="New category name" id="newCatName">
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close">Close</button>
+            <button type="button" class="btn btn-primary" id="createCat">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Are you sure you want to delete <i><span id="catToDelete"></span></i>?  This will delete all challenges from this category!</h5>
+            <button type="button" class="close" data-dismiss="modal">
+                <span>&times;</span>
+            </button>
+            </div>
+            <div class="modal-footer">
+            <div class="alert alert-danger alert-dismissible" id="error" style="display:none;">
+                    Server error, please try again!
+                    <button type="button" class="close" id="close">
+                        <span>&times;</span>
+                    </button>
+                </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close">Close</button>
+            <button type="button" class="btn btn-danger" id="deleteCat">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/js/adminchallenges.js" type="text/javascript" defer="defer"></script>

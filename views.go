@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -215,12 +216,128 @@ func updatePageSource(user *userT, config *configT, w http.ResponseWriter, r *ht
 }
 
 func adminChallengeView(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
+	if user.admin != 1 {
+		log.Println("Non-admin attempt to access adminchallenges.html")
+		http.Error(w, "Not an admin", http.StatusUnauthorized)
+		return
+	}
 	w.Header().Set("Content-Type", "text/html; charset=uft-8")
 	ctx := defaultContext("adminchallenges.html", user, config)
+	cats := config.db.getCats()
+	challs := config.db.getChalls()
+	catchall := make(map[string][]challT)
+	for _, chall := range challs {
+		for _, cat := range cats {
+			if cat.id == chall.category {
+				catchall[cat.name] = append(catchall[cat.name], chall)
+			}
+		}
+	}
+	uctx := pongo2.Context{
+		"cats":     cats,
+		"catchall": catchall,
+	}
+	ctx.Update(uctx)
 	if err := frame.ExecuteWriter(*ctx, w); err != nil {
 		log.Println("Unable to render adminchallenges.html")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+func updateChallenge(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {
+	if user.admin != 1 {
+		log.Println("Non-admin attempt to access adminchallenges.html")
+		http.Error(w, "Not an admin", http.StatusUnauthorized)
+		return
+	}
+	decoder := json.NewDecoder(r.Body)
+	var data map[string]interface{}
+	if jerr := decoder.Decode(&data); jerr != nil {
+		log.Println("Unable to decode data")
+		http.Error(w, jerr.Error(), http.StatusInternalServerError)
+		return
+	}
+	ctype, ok := data["type"].(string)
+	if !ok {
+		log.Println("Unable to get type")
+		http.Error(w, "Invalid type", http.StatusBadRequest)
+		return
+	}
+	op, ok := data["operation"].(string)
+	if !ok {
+		log.Println("Unable to get operation")
+		http.Error(w, "Invalid operation", http.StatusBadRequest)
+		return
+	}
+	name, ok := data["name"].(string)
+	if !ok {
+		log.Println("Unable to get name")
+		http.Error(w, "Invalid name", http.StatusBadRequest)
+		return
+	}
+	if ctype == "category" {
+		if op == "create" {
+			if config.db.catExists(name) {
+				log.Println("Category already exists")
+				http.Error(w, "Category already exists", http.StatusBadRequest)
+				return
+			}
+			if err := config.db.createCat(name); err != nil {
+				log.Println("Unable to create category")
+				http.Error(w, "Unable to create category", http.StatusInternalServerError)
+				return
+			}
+		} else if op == "update" {
+			if !config.db.catExists(name) {
+				log.Println("Category doesn't exist")
+				http.Error(w, "Category doesn't exist", http.StatusBadRequest)
+				return
+			}
+			// TODO: More update code
+		} else if op == "delete" {
+			if err := config.db.deleteCat(name); err != nil {
+				http.Error(w, "Unable to delete category", http.StatusInternalServerError)
+				return
+			}
+		} else {
+			http.Error(w, "Invalid operation", http.StatusBadRequest)
+			return
+		}
+	} else if ctype == "challenge" {
+		if op == "update" {
+			desc, ok := data["desc"].(string)
+			if !ok || len(desc) > 512 {
+				http.Error(w, "Invalid description", http.StatusBadRequest)
+				return
+			}
+			flag, ok := data["flag"].(string)
+			if !ok || len(flag) == 0 {
+				http.Error(w, "Invalid flag", http.StatusBadRequest)
+				return
+			}
+			pointstr, ok := data["points"].(string)
+			points, err := strconv.Atoi(pointstr)
+			if !ok || err != nil || points < 0 {
+				http.Error(w, "Invalid points amount", http.StatusBadRequest)
+				return
+			}
+			cat, ok := data["cat"].(string)
+			if !ok {
+				http.Error(w, "Invalid category", http.StatusBadRequest)
+				return
+			}
+			// TODO: More update code
+		} else if op == "delete" {
+			// TODO: Delete code
+		} else {
+			http.Error(w, "Invalid operation", http.StatusBadRequest)
+			return
+		}
+	} else {
+		http.Error(w, "Invalid type", http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
 }
 
 func loginView(user *userT, config *configT, w http.ResponseWriter, r *http.Request) {

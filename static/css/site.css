@@ -78,10 +78,26 @@ body {
     height: calc(100% - 3rem);
 }
 
-#newpage {
+#newpage, #newcat, #newchall {
     background-color: #3498DB !important;
 }
 
-#pages .page-selector:last-child {
+#pages .page-selector:last-child, #categories .cat-selector:last-child {
     border-radius: 0;
+}
+
+#challenge-desc {
+    min-height: 36px;
+    max-height: 120px;
+}
+
+#newchallform {
+    height: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+#newchallform .col-auto {
+    width: 100%;
 }
