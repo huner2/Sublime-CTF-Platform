@@ -1,4 +1,5 @@
 var cat;
+var challid = 0;
 
 $("#categories").on('click', '.cat-selector', function(e){
     e.preventDefault();
@@ -66,6 +67,7 @@ $("#save-challenge").on("click", function(e) {
         flag: $("#challenge-flag").val(),
         points: $("#challenge-points").val(),
         cat: cat,
+        id: challid,
         type: "challenge"
     })).fail(function(res) {
         $("#incorrectChallText").text(res.responseText);

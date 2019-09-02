@@ -91,6 +91,7 @@ func (db *ctfDB) createChallengeTables() error {
 			"id SERIAL PRIMARY KEY," +
 			"category integer REFERENCES CATEGORIES(id) ON DELETE CASCADE," +
 			"name varchar(64)," +
+			"desc varchar(512)," +
 			"flag varchar(256)," +
 			"points integer," +
 			"solves integer" +
@@ -268,4 +269,14 @@ func (db *ctfDB) getChalls() []challT {
 	}
 
 	return challs
+}
+
+// openConnection() must be called before this method
+// createChallengeTables() must be called before this method
+// This will create the challenge if it doesn't exist
+func (db *ctfDB) updateChallenge(id int, category, name, desc, flag string, points int) error {
+	var chall challT
+	err := db.QueryRow("SELECT id, category, name, flag, points FROM CHALLENGES WHERE id=$1;", id)
+
+	return nil
 }

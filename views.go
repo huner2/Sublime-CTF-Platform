@@ -326,7 +326,12 @@ func updateChallenge(user *userT, config *configT, w http.ResponseWriter, r *htt
 				http.Error(w, "Invalid category", http.StatusBadRequest)
 				return
 			}
-			// TODO: More update code
+			id, ok := data["id"].(float64)
+			if !ok {
+				http.Error(w, "Invalid id", http.StatusBadRequest)
+				return
+			}
+			config.db.updateChallenge(int(id), cat, name, desc, flag, points)
 		} else if op == "delete" {
 			// TODO: Delete code
 		} else {
